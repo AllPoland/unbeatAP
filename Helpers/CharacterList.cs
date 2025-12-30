@@ -9,6 +9,11 @@ public static class CharacterList
 
     public static void AddCharacter(string character)
     {
+        if(characters.Contains(character))
+        {
+            return;
+        }
+
         characters.Add(character.ToLower());
     }
 

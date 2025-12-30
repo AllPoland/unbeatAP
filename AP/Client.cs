@@ -50,9 +50,13 @@ public class Client
         {
             DifficultyController.AddProgressiveSong(name);
         }
-        else if(CharacterController.CharNames.Contains(name))
+        else if(name.StartsWith(CharacterController.CharPrefix))
         {
             CharacterController.AddCharacter(name);
+        }
+        else
+        {
+            Plugin.Logger.LogWarning($"Unable to handle item: {name}");
         }
 
         helper.DequeueItem();
