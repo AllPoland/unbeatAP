@@ -5,7 +5,7 @@ namespace UNBEATAP.Traps;
 public static class Fading
 {
     private static bool enableFade;
-    public static void EnableFade(bool enabled)
+    public static void UpdateFade(bool enabled)
     {
         enableFade = enabled;
     }

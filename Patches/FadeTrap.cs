@@ -9,7 +9,7 @@ public class FadeTrap
     [HarmonyPrefix]
     static bool HidingPatch(ref bool __result)
     {
-        if(Fading.GetFade())
+        if(Fading.GetFade() && Plugin.Client.Connected)
         {
             __result = true;
             return false;
