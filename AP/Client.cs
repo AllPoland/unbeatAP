@@ -17,6 +17,9 @@ public class Client
     public List<string> ReceivedItems = new List<string>();
     public bool ItemsDirty = false;
 
+    public string primaryCharacter;
+    public string secondaryCharacter;
+
     private string ip;
     private int port;
     private string slot;
@@ -39,14 +42,14 @@ public class Client
 
     public void SetPrimaryCharacter(string primary)
     {
-        FileStorage.beatmapOptions.primaryCharacter = primary;
+        primaryCharacter = primary;
         Session.DataStorage[Scope.Slot, "primaryCharacter"] = primary;
     }
 
 
     public void SetSecondaryCharacter(string secondary)
     {
-        FileStorage.beatmapOptions.secondaryCharacter = secondary;
+        secondaryCharacter = secondary;
         Session.DataStorage[Scope.Slot, "secondaryCharacter"] = secondary;
     }
 
@@ -134,7 +137,7 @@ public class Client
         Session.Items.ItemReceived += HandleItemReceive;
         GetQueuedItems();
 
-        FileStorage.beatmapOptions.primaryCharacter = await primaryCharTask ?? "beat";
-        FileStorage.beatmapOptions.secondaryCharacter = await secondaryCharTask ?? "quaver";
+        primaryCharacter = await primaryCharTask ?? "Beat";
+        secondaryCharacter = await secondaryCharTask ?? "Quaver";
     }
 }

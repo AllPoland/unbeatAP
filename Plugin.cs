@@ -86,12 +86,6 @@ public class Plugin : BaseUnityPlugin
             Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
             await Client.ConnectAndGetData();
 
-            if(!Client.Connected)
-            {
-                Logger.LogWarning($"Failed to connect to archipelago! Stopping.");
-                return;
-            }
-
             Logger.LogInfo("Applying patches.");
             try
             {
@@ -99,6 +93,9 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
                 Harmony.CreateAndPatchAll(typeof(BlockAuthentication));
                 Harmony.CreateAndPatchAll(typeof(UnlockAll));
+
+                Harmony.CreateAndPatchAll(typeof(ArcadeCharacterTogglePatch));
+                Harmony.CreateAndPatchAll(typeof(RhythmCharacterSelectorPatch));
             }
             catch(Exception e)
             {

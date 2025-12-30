@@ -16,7 +16,7 @@ public class ArcadeCharacterView
             return true;
         }
 
-        if(CharacterList.GetCharacters().Contains(character.name.ToLower()))
+        if(CharacterList.GetCharacters().Contains(character.name))
         {
             __result = true;
             return true;

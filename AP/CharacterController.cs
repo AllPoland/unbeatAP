@@ -16,24 +16,21 @@ public static class CharacterController
         if(characters.Count <= 0)
         {
             // No characters unlocked for some reason, just use defaults
-            client.SetPrimaryCharacter("beat");
-            client.SetSecondaryCharacter("quaver");
+            client.SetPrimaryCharacter("Beat");
+            client.SetSecondaryCharacter("Quaver");
             return;
         }
 
-        string primary = FileStorage.beatmapOptions.primaryCharacter;
-        string secondary = FileStorage.beatmapOptions.secondaryCharacter;
+        string primary = Plugin.Client.primaryCharacter;
+        string secondary = Plugin.Client.secondaryCharacter;
         if(!characters.Contains(primary))
         {
-            primary = characters[0];
+            client.SetPrimaryCharacter(characters[0]);
         }
         if(!characters.Contains(secondary))
         {
-            secondary = characters[0];
+            client.SetSecondaryCharacter(characters[0]);
         }
-
-        client.SetPrimaryCharacter(primary);
-        client.SetSecondaryCharacter(secondary);
     }
 
 

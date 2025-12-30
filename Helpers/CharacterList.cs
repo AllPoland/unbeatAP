@@ -36,7 +36,7 @@ public static class CharacterList
             return false;
         }
 
-        characters.Add(character.ToLower());
+        characters.Add(character);
         return true;
     }
 
