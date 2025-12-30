@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
+using Archipelago.MultiClient.Net.Helpers;
 
 namespace UNBEATAP.AP;
 
@@ -12,6 +14,9 @@ public class Client
     public bool Connected = false;
 
     public ArchipelagoSession Session;
+
+    public List<string> ReceivedItems = new List<string>();
+    public bool ItemsDirty = false;
 
     private string ip;
     private int port;
@@ -33,31 +38,37 @@ public class Client
     }
 
 
-    private void HandleReceiveItem(string name)
+    private void HandleReceiveItem(IReceivedItemsHelper helper)
     {
+        ItemInfo item = helper.PeekItem();
+        string name = item.ItemName;
+
+        ReceivedItems.Add(name);
+        ItemsDirty = true;
+
         if(name.StartsWith(DifficultyController.SongNamePrefix))
         {
             DifficultyController.AddProgressiveSong(name);
-            return;
         }
-        if(CharacterController.CharNames.Contains(name))
+        else if(CharacterController.CharNames.Contains(name))
         {
             CharacterController.AddCharacter(name);
-            return;
         }
+
+        helper.DequeueItem();
     }
 
 
-    private void GetExistingItems()
+    private void GetQueuedItems()
     {
-        foreach(ItemInfo item in Session.Items.AllItemsReceived)
+        while(Session.Items.Any())
         {
-            HandleReceiveItem(item.ItemName);
+            HandleReceiveItem(Session.Items);
         }
     }
 
 
-    private void GetStoredItems()
+    private async Task GetStoredItems()
     {
         
     }
@@ -106,7 +117,7 @@ public class Client
         
         Connected = true;
 
-        GetStoredItems();
-        GetExistingItems();
+        await GetStoredItems();
+        GetQueuedItems();
     }
 }

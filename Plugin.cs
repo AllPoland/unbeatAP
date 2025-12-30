@@ -1,10 +1,10 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using UNBEATAP.Patches;
 using UNBEATAP.AP;
 using BepInEx.Configuration;
-using System;
 using UNBEATAP.Helpers;
 
 namespace UNBEATAP;
@@ -14,7 +14,9 @@ namespace UNBEATAP;
 public class Plugin : BaseUnityPlugin
 {
     public const string GameName = "UNBEATABLE Arcade";
-    public const string AssetsFolder = "BepInEx/plugins/unbeatAP/Assets";
+    public const string PluginFolder = "BepInEx/plugins/unbeatAP";
+    public static readonly string AssetsFolder = PluginFolder + "/Assets";
+    public static readonly string SaveFolder = PluginFolder + "/Saves";
 
     internal static new ManualLogSource Logger;
 
@@ -66,32 +68,52 @@ public class Plugin : BaseUnityPlugin
 
     private async void Awake()
     {
-        // Plugin startup logic
-        Logger = base.Logger;
-
-        LoadConfig();
-
-        await DifficultyList.Init();
-
-        Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
-        await Client.ConnectAndGetData();
-
         try
         {
-            // ArcadeSongView seems pretty useless if ArcadeDifficultyView is enabled, maybe it can be unpatched on archipelago connection?
-            // Harmony.CreateAndPatchAll(typeof(ArcadeSongView));
+            // Plugin startup logic
+            Logger = base.Logger;
 
-            Harmony.CreateAndPatchAll(typeof(ArcadeCharacterView));
-            Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
-            Harmony.CreateAndPatchAll(typeof(BlockAuthentication));
-            Harmony.CreateAndPatchAll(typeof(UnlockAll));
+            Logger.LogInfo("Loading config.");
+            LoadConfig();
+
+            Logger.LogInfo("Loading assets.");
+            await DifficultyList.Init();
+
+            Logger.LogInfo("Creating objects.");
+            SaveHandler.Init();
+
+            Logger.LogInfo("Setting up client.");
+            Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
+            await Client.ConnectAndGetData();
+
+            if(!Client.Connected)
+            {
+                Logger.LogWarning($"Failed to connect to archipelago! Stopping.");
+                return;
+            }
+
+            Logger.LogInfo("Applying patches.");
+            try
+            {
+                // ArcadeSongView seems pretty useless if ArcadeDifficultyView is enabled, maybe it can be unpatched on archipelago connection?
+                // Harmony.CreateAndPatchAll(typeof(ArcadeSongView));
+
+                Harmony.CreateAndPatchAll(typeof(ArcadeCharacterView));
+                Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
+                Harmony.CreateAndPatchAll(typeof(BlockAuthentication));
+                Harmony.CreateAndPatchAll(typeof(UnlockAll));
+            }
+            catch(Exception e)
+            {
+                Logger.LogFatal($"Patching failed with error: {e.Message}, {e.StackTrace}");
+                return;
+            }
+
+            Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
         }
         catch(Exception e)
         {
-            Logger.LogFatal($"Patching failed with error: {e.Message}, {e.StackTrace}");
-            return;
+            Logger.LogFatal($"{e.Message}, {e.StackTrace}");
         }
-
-        Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
     }
 }

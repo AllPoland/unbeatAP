@@ -22,8 +22,6 @@ public class ArcadeDifficultyView
             return true;
         }
 
-        Plugin.Logger.LogInfo($"Stopped unlocking of {fullName}");
-
         __result = false;
         return false;
     }
