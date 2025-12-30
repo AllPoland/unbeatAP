@@ -7,14 +7,16 @@ public static class CharacterList
     private static List<string> characters = new List<string>();
 
 
-    public static void AddCharacter(string character)
+    public static bool TryAddCharacter(string character)
     {
         if(characters.Contains(character))
         {
-            return;
+            Plugin.Logger.LogWarning($"Character '{character}' does not exist!");
+            return false;
         }
 
         characters.Add(character.ToLower());
+        return true;
     }
 
 

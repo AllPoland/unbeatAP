@@ -37,6 +37,20 @@ public class Client
     }
 
 
+    public void SetPrimaryCharacter(string primary)
+    {
+        FileStorage.beatmapOptions.primaryCharacter = primary;
+        Session.DataStorage[Scope.Slot, "primaryCharacter"] = primary;
+    }
+
+
+    public void SetSecondaryCharacter(string secondary)
+    {
+        FileStorage.beatmapOptions.secondaryCharacter = secondary;
+        Session.DataStorage[Scope.Slot, "secondaryCharacter"] = secondary;
+    }
+
+
     private void HandleItemReceive(IReceivedItemsHelper helper)
     {
         ItemInfo item = helper.PeekItem();
@@ -114,8 +128,13 @@ public class Client
         
         Connected = true;
 
-        Session.Items.ItemReceived += HandleItemReceive;
+        using Task<string> primaryCharTask = Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
+        using Task<string> secondaryCharTask = Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
 
+        Session.Items.ItemReceived += HandleItemReceive;
         GetQueuedItems();
+
+        FileStorage.beatmapOptions.primaryCharacter = await primaryCharTask ?? "beat";
+        FileStorage.beatmapOptions.secondaryCharacter = await secondaryCharTask ?? "quaver";
     }
 }
