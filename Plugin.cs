@@ -96,6 +96,9 @@ public class Plugin : BaseUnityPlugin
 
                 Harmony.CreateAndPatchAll(typeof(ArcadeCharacterTogglePatch));
                 Harmony.CreateAndPatchAll(typeof(RhythmCharacterSelectorPatch));
+                
+                Harmony.CreateAndPatchAll(typeof(FadeTrap));
+                Harmony.CreateAndPatchAll(typeof(ScrollSpeedTrap));
             }
             catch(Exception e)
             {
