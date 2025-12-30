@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
@@ -72,12 +71,6 @@ public class Client
     }
 
 
-    private async Task GetStoredItems()
-    {
-        
-    }
-
-
     public async Task ConnectAndGetData()
     {
         Plugin.Logger.LogInfo($"Connecting to {ip}:{port} with game {Plugin.GameName} as {slot}");
@@ -121,9 +114,8 @@ public class Client
         
         Connected = true;
 
-        await GetStoredItems();
-        GetQueuedItems();
-
         Session.Items.ItemReceived += HandleItemReceive;
+
+        GetQueuedItems();
     }
 }

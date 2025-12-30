@@ -95,9 +95,6 @@ public class Plugin : BaseUnityPlugin
             Logger.LogInfo("Applying patches.");
             try
             {
-                // ArcadeSongView seems pretty useless if ArcadeDifficultyView is enabled, maybe it can be unpatched on archipelago connection?
-                // Harmony.CreateAndPatchAll(typeof(ArcadeSongView));
-
                 Harmony.CreateAndPatchAll(typeof(ArcadeCharacterView));
                 Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
                 Harmony.CreateAndPatchAll(typeof(BlockAuthentication));

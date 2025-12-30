@@ -39,25 +39,26 @@ public static class DifficultyList
     }
 
 
-    public static void AddSongItem(string songName, int diffIndex)
+    public static bool TryAddSongItem(string songName, int diffIndex)
     {
         string internalName = GetInternalName(songName);
         
         if(!diffDict.TryGetValue(internalName, out string[] difficulties))
         {
-            Plugin.Logger.LogError($"Failed to get difficulties for song: {internalName}");
-            return;
+            Plugin.Logger.LogWarning($"Failed to get difficulties for song: {internalName}");
+            return false;
         }
 
         if(difficulties.Length <= diffIndex)
         {
             int extraDiffs = diffIndex - difficulties.Length + 1;
             Plugin.Logger.LogWarning($"Received {extraDiffs} extra difficult(y)(ies) for song: {internalName}");
-            return;
+            return false;
         }
 
         string newDifficulty = difficulties[diffIndex];
         AddDifficulty(internalName, newDifficulty);
+        return true;
     }
 
 
