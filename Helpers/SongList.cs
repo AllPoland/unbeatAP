@@ -17,7 +17,7 @@ namespace UNBEATAP.Helpers
         private List<String> songs = new List<String>();
         public void AddSong(String song)
         {
-            songs.Add(song);
+            songs.Add(song.ToLower());
         }
 
         public List<String> GetSongs()
