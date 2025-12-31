@@ -1,4 +1,3 @@
-using FMOD.Studio;
 using HarmonyLib;
 using Rhythm;
 using UNBEATAP.Traps;
