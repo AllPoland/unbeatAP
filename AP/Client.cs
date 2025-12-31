@@ -5,6 +5,7 @@ using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Helpers;
+using UnityEngine;
 
 namespace UNBEATAP.AP;
 
@@ -13,11 +14,14 @@ public class Client
     public bool Connected { get; private set; }
 
     public ArchipelagoSession Session;
+    public SlotData SlotData;
 
     public List<ItemInfo> ReceivedItems = new List<ItemInfo>();
 
-    public string primaryCharacter;
-    public string secondaryCharacter;
+    public string primaryCharacter { get; private set; }
+    public string secondaryCharacter { get; private set; }
+
+    public bool MissingDlc { get; private set; }
 
     public event Action<ItemInfo> OnItemReceived;
 
@@ -35,6 +39,8 @@ public class Client
         this.slot = slot;
         this.password = password;
         this.deathLink = deathLink;
+
+        MissingDlc = false;
 
         Plugin.Logger.LogInfo($"Creating session with server {ip}:{port}");
         Session = ArchipelagoSessionFactory.CreateSession(ip, port);
@@ -137,6 +143,27 @@ public class Client
         }
         
         Connected = true;
+
+        SlotData = new SlotData(Session.DataStorage.GetSlotData());
+
+        if(SlotData.UseBreakout)
+        {
+            try
+            {
+                DlcList dlcs = Resources.Load<DlcList>("DlcList");
+                if(!dlcs.availableDlcs.Contains("DeluxeEdition"))
+                {
+                    Plugin.Logger.LogError("The Breakout Edition DLC was enabled in the world configuration, but is not installed!\n    The randomizer may not be possible without the DLC!");
+                    MissingDlc = true;
+                }
+            }
+            catch {}
+
+            if(!MissingDlc)
+            {
+                Plugin.Logger.LogInfo($"Breakout Edition DLC is enabled for this randomizer.");
+            }
+        }
 
         string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
         string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
