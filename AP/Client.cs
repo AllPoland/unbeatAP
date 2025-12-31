@@ -14,11 +14,12 @@ public class Client
 
     public ArchipelagoSession Session;
 
-    public List<string> ReceivedItems = new List<string>();
-    public bool ItemsDirty = false;
+    public List<ItemInfo> ReceivedItems = new List<ItemInfo>();
 
     public string primaryCharacter;
     public string secondaryCharacter;
+
+    public event Action<ItemInfo> OnItemReceived;
 
     private string ip;
     private int port;
@@ -57,11 +58,14 @@ public class Client
     private void HandleItemReceive(IReceivedItemsHelper helper)
     {
         ItemInfo item = helper.PeekItem();
+        if(ReceivedItems.Contains(item))
+        {
+            Plugin.Logger.LogWarning($"Received duplicate of {item.ItemName} from {item.LocationName}!");
+            helper.DequeueItem();
+            return;
+        }
+
         string name = item.ItemName;
-
-        ReceivedItems.Add(name);
-        ItemsDirty = true;
-
         if(name.StartsWith(DifficultyController.SongNamePrefix))
         {
             DifficultyController.AddProgressiveSong(name);
@@ -74,6 +78,9 @@ public class Client
         {
             Plugin.Logger.LogWarning($"Unable to handle item: {name}");
         }
+
+        ReceivedItems.Add(item);
+        OnItemReceived?.Invoke(item);
 
         helper.DequeueItem();
     }
@@ -131,13 +138,13 @@ public class Client
         
         Connected = true;
 
-        using Task<string> primaryCharTask = Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
-        using Task<string> secondaryCharTask = Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
+        string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
+        string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
 
         Session.Items.ItemReceived += HandleItemReceive;
         GetQueuedItems();
 
-        primaryCharacter = await primaryCharTask ?? "Beat";
-        secondaryCharacter = await secondaryCharTask ?? "Quaver";
+        SetPrimaryCharacter(string.IsNullOrEmpty(primarySelected) ? "Beat" : primarySelected);
+        SetSecondaryCharacter(string.IsNullOrEmpty(secondarySelected) ? "Quaver" : secondarySelected);
     }
 }

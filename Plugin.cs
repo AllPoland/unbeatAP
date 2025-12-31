@@ -79,9 +79,6 @@ public class Plugin : BaseUnityPlugin
             Logger.LogInfo("Loading assets.");
             await DifficultyList.Init();
 
-            // Logger.LogInfo("Creating objects.");
-            // SaveHandler.Init();
-
             Logger.LogInfo("Setting up client.");
             Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
             await Client.ConnectAndGetData();
