@@ -5,15 +5,13 @@ namespace UNBEATAP.Patches;
 
 public class FadeTrap
 {
-    [HarmonyPatch(typeof(HitObjectInfo), "IsHiding")]
-    [HarmonyPrefix]
-    static bool HidingPatch(ref bool __result)
+    [HarmonyPatch(typeof(BaseNote), "Init")]
+    [HarmonyPostfix]
+    static void HidingPatch(ref BaseNote __instance)
     {
         if(Fading.GetFade() && Plugin.Client.Connected)
         {
-            __result = true;
-            return false;
+            __instance.hiding = true;
         }
-        return true;
     }
 }
