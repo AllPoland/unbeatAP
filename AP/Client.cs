@@ -6,6 +6,7 @@ using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Helpers;
 using UnityEngine;
+using System.Linq;
 
 namespace UNBEATAP.AP;
 
@@ -47,6 +48,20 @@ public class Client
     }
 
 
+    public bool HasReceivedItem(ItemInfo item)
+    {
+        PlayerInfo player = item.Player;
+        return ReceivedItems.Any(
+            x =>
+                item.ItemId == x.ItemId
+                && item.LocationId == x.LocationId
+                && item.Flags == x.Flags
+                && player?.Slot == x.Player?.Slot
+                && player?.Team == x.Player?.Team
+        );
+    }
+
+
     public void SetPrimaryCharacter(string primary)
     {
         primaryCharacter = primary;
@@ -64,12 +79,13 @@ public class Client
     private void HandleItemReceive(IReceivedItemsHelper helper)
     {
         ItemInfo item = helper.PeekItem();
-        if(ReceivedItems.Contains(item))
+        if(HasReceivedItem(item))
         {
             Plugin.Logger.LogWarning($"Received duplicate of {item.ItemName} from {item.LocationName}!");
             helper.DequeueItem();
             return;
         }
+        ReceivedItems.Add(item);
 
         string name = item.ItemName;
         if(name.StartsWith(DifficultyController.SongNamePrefix))
@@ -85,7 +101,6 @@ public class Client
             Plugin.Logger.LogWarning($"Unable to handle item: {name}");
         }
 
-        ReceivedItems.Add(item);
         OnItemReceived?.Invoke(item);
 
         helper.DequeueItem();
