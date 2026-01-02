@@ -21,7 +21,7 @@ public class Plugin : BaseUnityPlugin
 
     internal static new ManualLogSource Logger;
 
-    public static Client Client;
+    public static Client Client = new Client();
 
     private ConfigEntry<string> configIp;
     private ConfigEntry<int> configPort;
@@ -82,18 +82,25 @@ public class Plugin : BaseUnityPlugin
 
             Logger.LogInfo("Setting up client.");
             Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
-            await Client.ConnectAndGetData();
 
             Logger.LogInfo("Applying patches.");
             try
             {
-                Harmony.CreateAndPatchAll(typeof(ArcadeCharacterView));
-                Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
+                // Disable general progression
                 Harmony.CreateAndPatchAll(typeof(BlockAuthentication));
+                Harmony.CreateAndPatchAll(typeof(MainProgressionContainerPatch));
                 Harmony.CreateAndPatchAll(typeof(UnlockAll));
 
+                // Disable challenges
+                Harmony.CreateAndPatchAll(typeof(ProfileInfoPatch));
+                Harmony.CreateAndPatchAll(typeof(BaseChallengeDescriptorPatch));
+
+                // Rando song handling
+                Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
                 Harmony.CreateAndPatchAll(typeof(BeatmapIndexPatch));
 
+                // Rando character handling
+                Harmony.CreateAndPatchAll(typeof(ArcadeCharacterView));
                 Harmony.CreateAndPatchAll(typeof(ArcadeCharacterTogglePatch));
                 Harmony.CreateAndPatchAll(typeof(RhythmCharacterSelectorPatch));
             }
@@ -102,6 +109,9 @@ public class Plugin : BaseUnityPlugin
                 Logger.LogFatal($"Patching failed with error: {e.Message}, {e.StackTrace}");
                 return;
             }
+
+            Logger.LogInfo($"Attempting to connect to Archipelago server.");
+            await Client.ConnectAndGetData();
 
             Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
         }

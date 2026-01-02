@@ -7,6 +7,7 @@ using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Helpers;
 using UnityEngine;
 using System.Linq;
+using Challenges;
 
 namespace UNBEATAP.AP;
 
@@ -14,8 +15,8 @@ public class Client
 {
     public bool Connected { get; private set; }
 
-    public ArchipelagoSession Session;
-    public SlotData SlotData;
+    public ArchipelagoSession Session { get; private set; }
+    public SlotData SlotData { get; private set; }
 
     public List<ItemInfo> ReceivedItems = new List<ItemInfo>();
 
@@ -26,11 +27,24 @@ public class Client
 
     public event Action<ItemInfo> OnItemReceived;
 
-    private string ip;
-    private int port;
-    private string slot;
-    private string password;
-    private bool deathLink;
+    private readonly string ip;
+    private readonly int port;
+    private readonly string slot;
+    private readonly string password;
+    private readonly bool deathLink;
+
+
+    public Client()
+    {
+        ip = "";
+        port = 58008;
+        slot = "";
+        password = "";
+        deathLink = false;
+
+        Connected = false;
+        MissingDlc = false;
+    }
 
 
     public Client(string ip, int port, string slot, string password, bool deathLink)
@@ -41,6 +55,7 @@ public class Client
         this.password = password;
         this.deathLink = deathLink;
 
+        Connected = false;
         MissingDlc = false;
 
         Plugin.Logger.LogInfo($"Creating session with server {ip}:{port}");
@@ -189,5 +204,12 @@ public class Client
         SetPrimaryCharacter(string.IsNullOrEmpty(primarySelected) ? "Beat" : primarySelected);
         SetSecondaryCharacter(string.IsNullOrEmpty(secondarySelected) ? "Quaver" : secondarySelected);
         CharacterController.ForceEquipUnlockedCharacter();
+
+        if(ArcadeProgressController.Instance)
+        {
+            // Force reload arcade progress so patches can take effect
+            Plugin.Logger.LogInfo($"Force reloading progress.");
+            ArcadeProgressController.Instance.Init();
+        }
     }
 }
