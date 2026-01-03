@@ -136,7 +136,7 @@ public static class StarCalculator
         float curveRange = 1f - curveCutoff - accEpsilon;
 
         float exponent = -bias * (rawAcc - curveCutoff);
-        float curvedAcc = curveRange + curveCutoff - (curveRange * Mathf.Exp(exponent));
+        float curvedAcc = maxAcc - (curveRange * Mathf.Exp(exponent));
         return curvedAcc * 100;
     }
 
