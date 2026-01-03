@@ -141,32 +141,32 @@ public static class DifficultyList
     }
 
 
-    private static async Task LoadDifficulties()
+    private static void LoadDifficulties()
     {
         const string diffFile = "difficulties.json";
 
         string diffPath = Path.Combine(Plugin.AssetsFolder, diffFile);
-        string json = await File.ReadAllTextAsync(diffPath);
+        string json = File.ReadAllText(diffPath);
         diffDict = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(json);
     }
 
 
-    private static async Task LoadSongs()
+    private static void LoadSongs()
     {
         const string songFile = "songs.json";
 
         string songPath = Path.Combine(Plugin.AssetsFolder, songFile);
-        string json = await File.ReadAllTextAsync(songPath);
+        string json = File.ReadAllText(songPath);
         songDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
     }
     
 
-    public static async Task Init()
+    public static void Init()
     {
         try
         {
-            await LoadDifficulties();
-            await LoadSongs();
+            LoadDifficulties();
+            LoadSongs();
         }
         catch(Exception e)
         {

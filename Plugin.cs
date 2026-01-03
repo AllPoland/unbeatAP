@@ -6,7 +6,6 @@ using UNBEATAP.Patches;
 using UNBEATAP.AP;
 using BepInEx.Configuration;
 using UNBEATAP.Helpers;
-using Rhythm;
 
 namespace UNBEATAP;
 
@@ -21,14 +20,36 @@ public class Plugin : BaseUnityPlugin
 
     internal static new ManualLogSource Logger;
 
-    public static Client Client = new Client();
+    private static Client _client = new Client();
+    public static Client Client
+    {
+        get => _client;
+        set
+        {
+            if(value == null)
+            {
+                // Do not allow the client to be set to null, lest the trout population all perish
+                _client = new Client();
+            }
+            else _client = value;
+        }
+    }
 
-    private ConfigEntry<string> configIp;
-    private ConfigEntry<int> configPort;
-    private ConfigEntry<string> configSlot;
-    private ConfigEntry<string> configPassword;
+    private static ConfigEntry<string> configIp;
+    private static ConfigEntry<int> configPort;
+    private static ConfigEntry<string> configSlot;
+    private static ConfigEntry<string> configPassword;
 
-    private ConfigEntry<bool> configDeathLink;
+    private static ConfigEntry<bool> configDeathLink;
+
+    private static ConfigEntry<int> backupCount;
+
+
+    public static void DoBackup()
+    {
+        Logger.LogInfo("Creating save backups.");
+        SaveBackup.BackupChallengeBoard(backupCount.Value);
+    }
 
 
     private void LoadConfig()
@@ -64,6 +85,13 @@ public class Plugin : BaseUnityPlugin
             false,
             "If Death Link is enabled, you'll fail out of a song if someone else dies, and everyone else will die when you fail a song."
         );
+
+        backupCount = Config.Bind(
+            "Other",
+            "Save Backup Count",
+            5,
+            "When connecting to Archipelago, some of your save files are backed up in case of an error. This adjusts how many backups to save before the oldest is deleted."
+        );
     }
 
 
@@ -78,7 +106,7 @@ public class Plugin : BaseUnityPlugin
             LoadConfig();
 
             Logger.LogInfo("Loading assets.");
-            await DifficultyList.Init();
+            DifficultyList.Init();
 
             Logger.LogInfo("Setting up client.");
             Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
@@ -113,10 +141,10 @@ public class Plugin : BaseUnityPlugin
                 return;
             }
 
+            Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
+
             Logger.LogInfo($"Attempting to connect to Archipelago server.");
             await Client.ConnectAndGetData();
-
-            Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
         }
         catch(Exception e)
         {

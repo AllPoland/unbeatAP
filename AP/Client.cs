@@ -171,6 +171,9 @@ public class Client
             Connected = false;
             return;
         }
+
+        // Backup save files in case our wacky stuff leads to breaking a save
+        Plugin.DoBackup();
         
         Connected = true;
 
