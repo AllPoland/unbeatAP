@@ -69,7 +69,8 @@ public static class HighScoreHandler
 
             int missCount = 0;
             score._notes.TryGetValue("Miss", out missCount);
-            float rating = CustomRatingCalculator.GetCustomRatingFromPlay(score.level, score.accuracy, missCount <= 0, !score.cleared);
+            float acc = score.accuracy * 100f;
+            float rating = CustomRatingCalculator.GetCustomRatingFromPlay(score.level, acc, missCount <= 0, !score.cleared);
 
             if(songRatings.ContainsKey(score.song) && songRatings[score.song] < rating)
             {

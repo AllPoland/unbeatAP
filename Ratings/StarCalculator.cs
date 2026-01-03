@@ -49,7 +49,7 @@ public static class StarCalculator
             return 0f;
         }
 
-        return Mathf.Pow(acc -50f, AccuracyPower);
+        return Mathf.Pow(acc - 50f, AccuracyPower);
     }
 
 
