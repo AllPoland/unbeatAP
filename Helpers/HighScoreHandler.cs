@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Rhythm;
+using UNBEATAP.AP;
 using UNBEATAP.Ratings;
 
 namespace UNBEATAP.Helpers;
 
 public static class HighScoreHandler
 {
+    public const float ExpectedFailThreshold = 55f;
+
     public static HighScoreList HighScores = new HighScoreList();
 
     private static float? playerRating;
@@ -107,5 +110,24 @@ public static class HighScoreHandler
 
         Plugin.Client.HandleRatingUpdate(playerRating.Value);
         return playerRating.Value;
+    }
+
+
+    public static float GetExpectedAcc(int level)
+    {
+        SlotData slotData = Plugin.Client.SlotData;
+        float expectedAcc = StarCalculator.GetExpectedAccCurve(
+            slotData.SkillRating,
+            level,
+            slotData.AccCurveCutoff,
+            slotData.AccCurveBias,
+            slotData.AllowPfc
+        );
+
+        if(expectedAcc < ExpectedFailThreshold)
+        {
+            return 0f;
+        }
+        else return expectedAcc;
     }
 }

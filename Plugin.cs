@@ -139,6 +139,8 @@ public class Plugin : BaseUnityPlugin
                 // Rating handling
                 Harmony.CreateAndPatchAll(typeof(PlayerStatsHelperPatch));
                 Harmony.CreateAndPatchAll(typeof(SongRatingDisplayPatch));
+                Harmony.CreateAndPatchAll(typeof(ArcadeSongScorePatch));
+                Harmony.CreateAndPatchAll(typeof(SongButtonPatch));
             }
             catch(Exception e)
             {

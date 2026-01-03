@@ -100,6 +100,7 @@ public class Client
         // The in-game rating is always scaled to be 0 to 100
         if(newRating >= 100f)
         {
+            Plugin.Logger.LogInfo("Target rating achieved! Setting goal.");
             Session.SetGoalAchieved();
         }
 
