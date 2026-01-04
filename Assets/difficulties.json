@@ -187,7 +187,8 @@
         "easy",
         "normal",
         "hard",
-        "unbeatable"
+        "unbeatable",
+        "star"
     ],
     "cop trauma": [
         "beginner",
@@ -619,7 +620,13 @@
         "easy",
         "normal",
         "hard",
-        "unbeatable",
-        "star"
+        "unbeatable"
+    ],
+    "familiar": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
     ]
 }
