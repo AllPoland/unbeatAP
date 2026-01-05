@@ -148,10 +148,10 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(PauseMenuPatch));
                 
                 // Traps
-                Harmony.CreateAndPatchAll(typeof(FadeTrap));
-                Harmony.CreateAndPatchAll(typeof(ScrollSpeedTrap));
-                Harmony.CreateAndPatchAll(typeof(RainbowTrap));
-                Harmony.CreateAndPatchAll(typeof(CriticalTrap));
+                Harmony.CreateAndPatchAll(typeof(StealthTrapPatch));
+                Harmony.CreateAndPatchAll(typeof(ScrollSpeedTrapPatch));
+                Harmony.CreateAndPatchAll(typeof(RainbowTrapPatch));
+                // Harmony.CreateAndPatchAll(typeof(CriticalTrap));
             }
             catch(Exception e)
             {

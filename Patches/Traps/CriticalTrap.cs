@@ -4,7 +4,7 @@ using UNBEATAP.Traps;
 
 namespace UNBEATAP.Patches;
 
-public class CriticalTrap
+public class CriticalTrapPatch
 {
     private static bool initialCritEnabled;
     [HarmonyPatch(typeof(FileStorageController), "SaveSettings")]
@@ -18,9 +18,11 @@ public class CriticalTrap
         }
         return true;
     }
+
+
     [HarmonyPatch(typeof(StorableBeatmapOptions), "useCriticalMode", MethodType.Getter)]
     [HarmonyPrefix]
-    static bool CriticalTrapPatch(ref bool __result)
+    static bool UseCriticalModePatch(ref bool __result)
     {
         // Enables critical when trap is triggered, does not change if user manually enabled critical
         if(Critical.GetCritical() && Plugin.Client.Connected)
@@ -30,6 +32,7 @@ public class CriticalTrap
         }
         return true;
     }
+
 
     [HarmonyPatch(typeof(LevelManager), "LoadArcadeLevel")]
     [HarmonyPrefix]
@@ -43,6 +46,7 @@ public class CriticalTrap
         }
     }
 
+
     [HarmonyPatch(typeof(LevelManager), "RestartLevel")]
     [HarmonyPrefix]
     static void EnableCriticalOnRestart()
@@ -53,6 +57,7 @@ public class CriticalTrap
             Critical.SetCritical(true);
         }
     }
+
 
     [HarmonyPatch(typeof(RhythmController), "InitializeAndPlay")]
     [HarmonyPostfix]

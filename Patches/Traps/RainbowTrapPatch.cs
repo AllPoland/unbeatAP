@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UNBEATAP.Patches;
 
-public class RainbowTrap
+public class RainbowTrapPatch
 {
     [HarmonyPatch(typeof(StorableBeatmapOptions), "normalNoteColor", MethodType.Getter)]
     [HarmonyPrefix]
@@ -18,6 +18,7 @@ public class RainbowTrap
         return false;
     }
 
+
     [HarmonyPatch(typeof(StorableBeatmapOptions), "multiHitNotesColor", MethodType.Getter)]
     [HarmonyPrefix]
     static bool MultiHitNotesColorPatch(ref Color __result)
@@ -30,6 +31,7 @@ public class RainbowTrap
         return false;
     }
 
+
     [HarmonyPatch(typeof(StorableBeatmapOptions), "laneSwapNoteColor", MethodType.Getter)]
     [HarmonyPrefix]
     static bool LaneSwapNoteColorPatch(ref Color __result)
@@ -41,6 +43,7 @@ public class RainbowTrap
         __result = new Color(Random.Range(0F,1F), Random.Range(0, 1F), Random.Range(0, 1F));
         return false;
     }
+
 
     [HarmonyPatch(typeof(StorableBeatmapOptions), "dodgeNoteColor", MethodType.Getter)]
     [HarmonyPrefix]

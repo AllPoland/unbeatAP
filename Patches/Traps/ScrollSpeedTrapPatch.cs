@@ -4,7 +4,7 @@ using UNBEATAP.Traps;
 
 namespace UNBEATAP.Patches;
 
-public class ScrollSpeedTrap
+public class ScrollSpeedTrapPatch
 {
     [HarmonyPatch(typeof(RhythmController), "noteTravelTime", MethodType.Getter)]
     [HarmonyPostfix]
