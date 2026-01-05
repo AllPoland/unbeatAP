@@ -29,7 +29,7 @@ public static class HighScoreHandler
             return playerRating.Value;
         }
 
-        if(HighScores == null || HighScores._highScores == null || HighScores._highScores.Count == 0)
+        if(HighScores?._highScores == null || HighScores._highScores.Count == 0)
         {
             return 0f;
         }

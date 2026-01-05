@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Arcade.UI.SongSelect;
-using Rhythm;
 using UNBEATAP.Helpers;
 
 namespace UNBEATAP.AP;
@@ -34,7 +33,7 @@ public static class DifficultyController
         SongItemCounts[songName] = unlockedDiffIndex + 1;
         Plugin.Logger.LogInfo($"Successfully collected Progressive Song #{unlockedDiffIndex + 1}: {songName}");
 
-        if(!RhythmController.Instance && ArcadeSongDatabase.Instance)
+        if(!JeffBezosController.isPlayingBeatmap && ArcadeSongDatabase.Instance)
         {
             // Since we're in the song select screen, refresh now
             ArcadeSongDatabase.Instance.LoadDatabase();
