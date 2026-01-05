@@ -10,12 +10,17 @@ public class ScrollSpeedTrapPatch
     [HarmonyPostfix]
     static void ScrollSpeedPatch(ref float __result)
     {
-        if(ScrollSpeed.GetZoom() && Plugin.Client.Connected)
+        if(!Plugin.Client.Connected)
+        {
+            return;
+        }
+
+        if(ScrollSpeed.GetZoom())
         {
             __result *= 0.5f;
         }
 
-        if(ScrollSpeed.GetCrawl() && Plugin.Client.Connected)
+        if(ScrollSpeed.GetCrawl())
         {
             __result *= 1.5f;
         }

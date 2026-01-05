@@ -10,10 +10,16 @@ public class RainbowTrapPatch
     [HarmonyPrefix]
     static bool NormalColorPatch(ref Color __result)
     {
-        if(!Rainbow.GetRainbow() && !Plugin.Client.Connected)
+        if(!Plugin.Client.Connected)
         {
             return true;
         }
+
+        if(!Rainbow.GetRainbow())
+        {
+            return true;
+        }
+
         __result = new Color(Random.Range(0F,1F), Random.Range(0, 1F), Random.Range(0, 1F));
         return false;
     }
@@ -23,10 +29,16 @@ public class RainbowTrapPatch
     [HarmonyPrefix]
     static bool MultiHitNotesColorPatch(ref Color __result)
     {
-        if(!Rainbow.GetRainbow() && !Plugin.Client.Connected)
+        if(!Plugin.Client.Connected)
         {
             return true;
         }
+
+        if(!Rainbow.GetRainbow())
+        {
+            return true;
+        }
+
         __result = new Color(Random.Range(0F,1F), Random.Range(0, 1F), Random.Range(0, 1F));
         return false;
     }
@@ -36,10 +48,16 @@ public class RainbowTrapPatch
     [HarmonyPrefix]
     static bool LaneSwapNoteColorPatch(ref Color __result)
     {
-        if(!Rainbow.GetRainbow() && !Plugin.Client.Connected)
+        if(!Plugin.Client.Connected)
         {
             return true;
         }
+
+        if(!Rainbow.GetRainbow())
+        {
+            return true;
+        }
+
         __result = new Color(Random.Range(0F,1F), Random.Range(0, 1F), Random.Range(0, 1F));
         return false;
     }
@@ -49,10 +67,16 @@ public class RainbowTrapPatch
     [HarmonyPrefix]
     static bool DodgeNoteColorPatch(ref Color __result)
     {
-        if(!Rainbow.GetRainbow() && !Plugin.Client.Connected)
+        if(!Plugin.Client.Connected)
         {
             return true;
         }
+
+        if(!Rainbow.GetRainbow())
+        {
+            return true;
+        }
+
         __result = new Color(Random.Range(0F,1F), Random.Range(0, 1F), Random.Range(0, 1F));
         return false;
     }

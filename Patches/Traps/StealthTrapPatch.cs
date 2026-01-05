@@ -9,7 +9,12 @@ public class StealthTrapPatch
     [HarmonyPostfix]
     static void HidingPatch(ref BaseNote __instance)
     {
-        if(Stealth.GetStealth() && Plugin.Client.Connected)
+        if(!Plugin.Client.Connected)
+        {
+            return;
+        }
+
+        if(Stealth.GetStealth())
         {
             __instance.hiding = true;
         }
