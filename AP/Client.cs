@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Helpers;
 using UnityEngine;
-using System.Linq;
 using Challenges;
 using UNBEATAP.Helpers;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
@@ -245,7 +245,8 @@ public class Client
         }
 
         Plugin.Logger.LogInfo("Loading previously saved high scores.");
-        await HighScoreSaver.LoadHighscores();
+        await HighScoreSaver.LoadHighScores();
+        Session.DataStorage[Scope.Slot, HighScoreSaver.LatestScoreKey].OnValueChanged += HighScoreSaver.OnLatestScoreUpdated;
 
         string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
         string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();

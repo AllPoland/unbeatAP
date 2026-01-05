@@ -4,6 +4,7 @@ using System.Linq;
 using Rhythm;
 using UNBEATAP.AP;
 using UNBEATAP.Ratings;
+using UnityEngine;
 
 namespace UNBEATAP.Helpers;
 
@@ -14,6 +15,46 @@ public static class HighScoreHandler
     public static HighScoreList HighScores = new HighScoreList();
 
     private static float? playerRating;
+
+
+    public static bool ReplaceHighScoreCustom(HighScoreItem score)
+    {
+        // Unlike the vanilla method, this doesn't mess with challenges or stats
+        if(!HighScoreList.IsScoreSaveable(score.modifierMask))
+        {
+            return false;
+        }
+
+        if(HighScores._highScores.TryGetValue(score.song, out HighScoreItem replace))
+        {
+            bool replaced = false;
+            if(score.score > replace.score)
+            {
+                replace.score = score.score;
+                replaced = true;
+            }
+            if(score.accuracy > replace.accuracy && !Mathf.Approximately(score.accuracy, replace.accuracy))
+            {
+                replace.accuracy = score.accuracy;
+                replaced = true;
+            }
+            if(score.maxCombo > replace.maxCombo)
+            {
+                replace.maxCombo = score.maxCombo;
+                replaced = true;
+            }
+            if(replaced)
+            {
+                replace._notes = score._notes;
+                replace.modifierMask = score.modifierMask;
+                replace.cleared |= score.cleared;
+            }
+            return replaced;
+        }
+
+        HighScores._highScores[score.song] = score;
+        return true;
+    }
 
 
     public static void ResetSavedRating()

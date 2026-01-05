@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using HarmonyLib;
+using UNBEATAP.Helpers;
 
 namespace UNBEATAP.Patches;
 
@@ -23,5 +25,22 @@ public class HighScoreListPatch
             accuracy = 0f;
         }
         return true;
+    }
+
+
+    [HarmonyPatch("ReplaceHighScore")]
+    [HarmonyPostfix]
+    static void ReplaceHighScorePostfix(bool __result, string song)
+    {
+        if(!Plugin.Client.Connected)
+        {
+            return;
+        }
+
+        if(__result && HighScoreHandler.HighScores._highScores.TryGetValue(song, out HighScoreItem newScore))
+        {
+            // This score was just added, so also notify DataStorage
+            HighScoreSaver.SetLatestScore(newScore);
+        }
     }
 }

@@ -4,15 +4,17 @@ using System.IO;
 using System.Threading.Tasks;
 using Archipelago.MultiClient.Net.Enums;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace UNBEATAP.Helpers;
 
 public static class HighScoreSaver
 {
     public const string HighScoresKey = "highscores";
+    public const string LatestScoreKey = "latestScore";
 
-    public static readonly string[] NoteJudgements = new string[]
-    {
+    public static readonly string[] NoteJudgements =
+    [
         "Critical",
         "Perfect",
         "Great",
@@ -20,10 +22,10 @@ public static class HighScoreSaver
         "Ok",
         "Barely",
         "Miss"
-    };
+    ];
 
 
-    public static byte[] SerializeHighscore(HighScoreItem item)
+    public static byte[] SerializeHighScore(HighScoreItem item)
     {
         item.OnBeforeSerialize();
 
@@ -49,7 +51,7 @@ public static class HighScoreSaver
     }
 
 
-    public static HighScoreItem DeserializeHighscore(byte[] highscore)
+    public static HighScoreItem DeserializeHighScore(byte[] highscore)
     {
         using MemoryStream byteStream = new MemoryStream(highscore);
         using BinaryReader reader = new BinaryReader(byteStream);
@@ -82,14 +84,14 @@ public static class HighScoreSaver
     }
 
 
-    public static string SerializeHighscores(HighScoreList list)
+    public static string SerializeHighScores(HighScoreList list)
     {
         list.OnBeforeSerialize();
 
         List<byte[]> scores = new List<byte[]>(list.highScores.Count);
         foreach(HighScoreItem highScore in list.highScores)
         {
-            byte[] newScore = SerializeHighscore(highScore);
+            byte[] newScore = SerializeHighScore(highScore);
             if(newScore != null)
             {
                 scores.Add(newScore);
@@ -105,14 +107,14 @@ public static class HighScoreSaver
     }
 
 
-    public static HighScoreList DeserializeHighscores(string serialized)
+    public static HighScoreList DeserializeHighScores(string serialized)
     {
         SerializedHighscoreList list = JsonConvert.DeserializeObject<SerializedHighscoreList>(serialized);
 
         List<HighScoreItem> highscores = new List<HighScoreItem>();
         foreach(byte[] serializedScore in list.scores)
         {
-            highscores.Add(DeserializeHighscore(serializedScore));
+            highscores.Add(DeserializeHighScore(serializedScore));
         }
 
         HighScoreList newList = new HighScoreList();
@@ -123,7 +125,7 @@ public static class HighScoreSaver
     }
 
 
-    public static void SaveHighscores()
+    public static void SaveHighScores()
     {
         if(!Plugin.Client.Connected)
         {
@@ -132,7 +134,7 @@ public static class HighScoreSaver
 
         try
         {
-            string serializedScores = SerializeHighscores(HighScoreHandler.HighScores);
+            string serializedScores = SerializeHighScores(HighScoreHandler.HighScores);
             Plugin.Logger.LogInfo($"Saving high scores with size: {(float)serializedScores.Length / 1000}kb");
             Plugin.Client.Session.DataStorage[Scope.Slot, HighScoresKey] = serializedScores;
         }
@@ -143,7 +145,7 @@ public static class HighScoreSaver
     }
 
 
-    public static async Task LoadHighscores()
+    public static async Task LoadHighScores()
     {
         if(!Plugin.Client.Connected)
         {
@@ -163,7 +165,7 @@ public static class HighScoreSaver
                 return;
             }
 
-            HighScoreList highScores = DeserializeHighscores(serializedScores);
+            HighScoreList highScores = DeserializeHighScores(serializedScores);
 
             HighScoreHandler.HighScores = highScores;
             HighScoreHandler.ResetSavedRating();
@@ -172,6 +174,58 @@ public static class HighScoreSaver
         {
             Plugin.Logger.LogError($"Failed to load high scores with error: {e.Message}, {e.StackTrace}");
         }
+    }
+
+
+    public static void SetLatestScore(HighScoreItem score)
+    {
+        try
+        {
+            byte[] bytes = SerializeHighScore(score);
+            string serialized = JsonConvert.SerializeObject(bytes);
+            Plugin.Client.Session.DataStorage[Scope.Slot, LatestScoreKey] = serialized;
+        }
+        catch(Exception e)
+        {
+            Plugin.Logger.LogError($"Failed to save latest score with error: {e.Message}, {e.StackTrace}");
+        }
+    }
+
+
+    private static void AddNewScore(JToken scoreToken)
+    {
+        try
+        {
+            if(scoreToken == null)
+            {
+                return;
+            }
+
+            string json = scoreToken.ToObject<string>();
+            if(string.IsNullOrEmpty(json))
+            {
+                return;
+            }
+
+            byte[] bytes = JsonConvert.DeserializeObject<byte[]>(json);
+            HighScoreItem score = DeserializeHighScore(bytes);
+
+            if(HighScoreHandler.ReplaceHighScoreCustom(score))
+            {
+                Plugin.Logger.LogInfo($"Received new high score for {score.song}");
+            }
+        }
+        catch(Exception e)
+        {
+            Plugin.Logger.LogWarning($"Failed to deserialize latest score with error: {e.Message}, {e.StackTrace}");
+        }
+    }
+
+
+    public static void OnLatestScoreUpdated(JToken originalValue, JToken newValue, Dictionary<string, JToken> additionalArguments)
+    {
+        AddNewScore(originalValue);
+        AddNewScore(newValue);
     }
 
 

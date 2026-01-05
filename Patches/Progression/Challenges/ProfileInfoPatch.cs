@@ -53,7 +53,7 @@ public class ProfileInfoPatch
         // Still reset stuff for calculations, but use our own method for saving highscores
         PlayerStatsHelper.Instance?.ResetSavedValues();
         HighScoreList.HighScoresUpdated?.Invoke();
-        HighScoreSaver.SaveHighscores();
+        HighScoreSaver.SaveHighScores();
         return false;
     }
 }
