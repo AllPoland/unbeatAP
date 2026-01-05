@@ -10,6 +10,7 @@ using UnityEngine;
 using Challenges;
 using UNBEATAP.Helpers;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
+using UNBEATAP.Traps;
 
 namespace UNBEATAP.AP;
 
@@ -151,6 +152,10 @@ public class Client
         {
             CharacterController.AddCharacter(name);
         }
+        else if(name.EndsWith(TrapController.TrapSuffix))
+        {
+            TrapController.ActivateTrap(name);
+        }
         else
         {
             Plugin.Logger.LogWarning($"Unable to handle item: {name}");
@@ -166,6 +171,14 @@ public class Client
     {
         while(Session.Items.Any())
         {
+            ItemInfo item = Session.Items.PeekItem();
+            if(item.ItemName.EndsWith(TrapController.TrapSuffix))
+            {
+                // Ignore traps from previous sessions
+                Session.Items.DequeueItem();
+                continue;
+            }
+
             HandleItemReceive(Session.Items);
         }
     }

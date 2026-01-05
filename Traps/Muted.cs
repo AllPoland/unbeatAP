@@ -4,21 +4,31 @@ namespace UNBEATAP.Traps;
 
 public static class Muted
 {
+    public static TrapTimer Timer = new TrapTimer();
+
+    public static bool IsMuted { get; private set; }
+
+
     public static void Mute()
     {
         RuntimeManager.GetBus("bus:/music").setMute(true);
+        IsMuted = true;
     }
 
 
-    public static void Unmute()
+    public static void UnMute()
     {
         RuntimeManager.GetBus("bus:/music").setMute(false);
+        IsMuted = false;
     }
 
 
-    public static bool IsMuted()
+    public static void Deactivate()
     {
-        RuntimeManager.GetBus("bus:/music").getMute(out bool muted);
-        return muted;
+        Timer.Deactivate();
+        if(IsMuted)
+        {
+            UnMute();
+        }
     }
 }

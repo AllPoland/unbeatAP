@@ -17,12 +17,12 @@ public class ScrollSpeedTrapPatch
 
         if(ScrollSpeed.GetZoom())
         {
-            __result *= 0.5f;
+            __result *= 0.75f;
         }
 
         if(ScrollSpeed.GetCrawl())
         {
-            __result *= 1.5f;
+            __result *= 1.75f;
         }
     }
 }

@@ -1,5 +1,6 @@
 using Rhythm;
 using UNBEATAP.AP;
+using UNBEATAP.Traps;
 
 namespace UNBEATAP.Helpers;
 
@@ -10,7 +11,7 @@ public static class DeathHelper
     public static bool HandledDeath = false;
 
 
-    public static bool KillPlayer(bool silent = true)
+    public static bool KillPlayer()
     {
         if(!RhythmController.Instance)
         {
@@ -27,6 +28,13 @@ public static class DeathHelper
 
     public static void OnPlayerDeath(DeathLinkReason reason)
     {
+        TrapController.DeactivateTraps();
+
+        if(!Plugin.Client.deathLink)
+        {
+            return;
+        }
+
         if(HandleDeathSilent)
         {
             HandleDeathSilent = false;

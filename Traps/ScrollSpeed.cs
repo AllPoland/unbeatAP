@@ -2,36 +2,54 @@ namespace UNBEATAP.Traps;
 
 public class ScrollSpeed
 {
-    private static bool zoom;
-    private static bool crawl;
+    public static TrapTimer ZoomTimer = new TrapTimer();
+    public static TrapTimer CrawlTimer = new TrapTimer();
 
 
     public static bool GetZoom()
     {
-        return zoom;
+        return ZoomTimer.GetActive();
     }
 
 
     public static bool GetCrawl()
     {
-        return crawl;
+        return CrawlTimer.GetActive();
     }
 
 
-    public static void SetZoom(bool zoomstate)
+    public static void ActivateZoom()
     {
-        if(!crawl)
+        if(CrawlTimer.GetActive())
         {
-            zoom = zoomstate;
+            CrawlTimer.Deactivate();
         }
+
+        ZoomTimer.Activate();
     }
 
 
-    public static void SetCrawl(bool crawlstate)
+    public static void ActivateCrawl()
     {
-        if(!zoom)
+        if(ZoomTimer.GetActive())
         {
-            crawl = crawlstate;
+            ZoomTimer.Deactivate();
         }
+
+        CrawlTimer.Activate();
+    }
+
+
+    public static void Deactivate()
+    {
+        ZoomTimer.Deactivate();
+        CrawlTimer.Deactivate();
+    }
+
+
+    public static void Update(float deltaTime)
+    {
+        ZoomTimer.Update(deltaTime);
+        CrawlTimer.Update(deltaTime);
     }
 }

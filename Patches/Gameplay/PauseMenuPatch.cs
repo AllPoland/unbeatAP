@@ -17,11 +17,6 @@ static class PauseMenuPatch
             return true;
         }
 
-        if(!Plugin.Client.deathLink)
-        {
-            return true;
-        }
-
         Traverse traverse = new Traverse(__instance);
         PauseSubMenu subMenu = traverse.Field("subMenu").GetValue<PauseSubMenu>();
 

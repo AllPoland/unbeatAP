@@ -6,6 +6,7 @@ using UNBEATAP.Patches;
 using UNBEATAP.AP;
 using BepInEx.Configuration;
 using UNBEATAP.Helpers;
+using UNBEATAP.Traps;
 
 namespace UNBEATAP;
 
@@ -35,10 +36,10 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    public static ConfigEntry<float> MutedDuration;
-    public static ConfigEntry<float> RainbowDuration;
-    public static ConfigEntry<float> ScrollSpeedDuration;
-    public static ConfigEntry<float> StealthDuration;
+    private static ConfigEntry<float> mutedDuration;
+    private static ConfigEntry<float> rainbowDuration;
+    private static ConfigEntry<float> scrollSpeedDuration;
+    private static ConfigEntry<float> stealthDuration;
 
     private static ConfigEntry<string> configIp;
     private static ConfigEntry<int> configPort;
@@ -91,28 +92,28 @@ public class Plugin : BaseUnityPlugin
             "If Death Link is enabled, you'll fail out of a song if someone else dies, and everyone else will die when you fail a song."
         );
 
-        MutedDuration = Config.Bind(
+        mutedDuration = Config.Bind(
             "Traps",
             "Mute Trap Duration",
             15f,
             "The amount of time a Mute Trap mutes the music. Set to 0 to disable Mute Traps client-side."
         );
-        RainbowDuration = Config.Bind(
+        rainbowDuration = Config.Bind(
             "Traps",
             "Rainbow Trap Duration",
-            15f,
+            30f,
             "The amount of time a Rainbow Trap randomizes note colors. Set to 0 to disable Rainbow Traps client-side."
         );
-        ScrollSpeedDuration = Config.Bind(
+        scrollSpeedDuration = Config.Bind(
             "Traps",
             "Scroll Speed Trap Duration",
             10f,
             "The amount of time a Scroll Speed Trap changes the note scroll speed. Set to 0 to disable Scroll Speed Traps client-side."
         );
-        StealthDuration = Config.Bind(
+        stealthDuration = Config.Bind(
             "Traps",
             "Stealth Trap Duration",
-            20f,
+            15f,
             "The amount of time a Stealth Trap fades out all notes. Set to 0 to disable Stealth Traps client-side."
         );
 
@@ -134,6 +135,12 @@ public class Plugin : BaseUnityPlugin
 
             Logger.LogInfo("Loading config.");
             LoadConfig();
+
+            Muted.Timer.Duration = mutedDuration.Value;
+            Rainbow.Timer.Duration = rainbowDuration.Value;
+            ScrollSpeed.CrawlTimer.Duration = scrollSpeedDuration.Value;
+            ScrollSpeed.ZoomTimer.Duration = scrollSpeedDuration.Value;
+            Stealth.Timer.Duration = stealthDuration.Value;
 
             Logger.LogInfo("Loading assets.");
             DifficultyList.Init();
@@ -181,7 +188,7 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(StealthTrapPatch));
                 Harmony.CreateAndPatchAll(typeof(ScrollSpeedTrapPatch));
                 Harmony.CreateAndPatchAll(typeof(RainbowTrapPatch));
-                // Harmony.CreateAndPatchAll(typeof(CriticalTrap));
+                Harmony.CreateAndPatchAll(typeof(TrapUpdatePatch));
             }
             catch(Exception e)
             {

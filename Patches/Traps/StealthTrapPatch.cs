@@ -7,7 +7,7 @@ public class StealthTrapPatch
 {
     [HarmonyPatch(typeof(BaseNote), "Init")]
     [HarmonyPostfix]
-    static void HidingPatch(ref BaseNote __instance)
+    static void InitPatch(ref BaseNote __instance)
     {
         if(!Plugin.Client.Connected)
         {
