@@ -291,12 +291,18 @@ public class Client
     {
         Plugin.Logger.LogInfo($"Disconnecting from {ip}:{port}");
 
-        // Doing an async void call but in theory there isn't much we would do by tracking this
-        Session.Socket.DisconnectAsync();
+        if(Session != null)
+        {
+            // Doing an async void call but in theory there isn't much we would do by tracking this
+            Session.Socket.DisconnectAsync();
 
-        Session.DataStorage[Scope.Slot, HighScoreSaver.LatestScoreKey].OnValueChanged -= HighScoreSaver.OnLatestScoreUpdated;
-        Session.Items.ItemReceived -= HandleItemReceive;
-        DeathLinkService.OnDeathLinkReceived -= HandleDeathLink;
+            Session.DataStorage[Scope.Slot, HighScoreSaver.LatestScoreKey].OnValueChanged -= HighScoreSaver.OnLatestScoreUpdated;
+            Session.Items.ItemReceived -= HandleItemReceive;
+        }
+        if(DeathLinkService != null)
+        {
+            DeathLinkService.OnDeathLinkReceived -= HandleDeathLink;
+        }
 
         DifficultyList.Clear();
         CharacterList.Clear();

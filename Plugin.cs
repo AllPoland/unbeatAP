@@ -53,6 +53,19 @@ public class Plugin : BaseUnityPlugin
     private static ConfigEntry<int> backupCount;
 
 
+    public static void SetupNewClient()
+    {
+        if(Client.Connected)
+        {
+            Logger.LogWarning("Tried to set up a new client while already connected!");
+            return;
+        }
+
+        Logger.LogInfo("Setting up client.");
+        Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
+    }
+
+
     public static void DoBackup()
     {
         Logger.LogInfo("Creating save backups.");
@@ -128,7 +141,7 @@ public class Plugin : BaseUnityPlugin
     }
 
 
-    private async void Awake()
+    private void Awake()
     {
         try
         {
@@ -149,9 +162,6 @@ public class Plugin : BaseUnityPlugin
 
             Logger.LogInfo($"Creating manager.");
             GameObject manager = new GameObject("Archipelago Manager", typeof(ArchipelagoManager));
-
-            Logger.LogInfo("Setting up client.");
-            Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
 
             Logger.LogInfo("Applying patches.");
             try
@@ -206,8 +216,7 @@ public class Plugin : BaseUnityPlugin
 
             Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
 
-            Logger.LogInfo($"Attempting to connect to Archipelago server.");
-            await Client.ConnectAndGetData();
+            ArchipelagoManager.Instance.CreateClientAndConnect();
         }
         catch(Exception e)
         {

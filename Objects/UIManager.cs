@@ -31,8 +31,6 @@ public class UIManager : MonoBehaviour
 
         textIdle.gameObject.GetComponent<TextMeshProUGUI>().SetText(disconnectText);
         textActive.gameObject.GetComponent<TextMeshProUGUI>().SetText(disconnectText);
-
-        Plugin.Logger.LogInfo(textIdle.gameObject.name);
     }
 
 

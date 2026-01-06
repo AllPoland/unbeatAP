@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +15,39 @@ public class ArchipelagoManager : MonoBehaviour
     public UIManager UIManager;
 
     public event Action<Scene> OnSceneLoaded;
+
+    private bool connecting;
+
+
+    private IEnumerator ConnectCoroutine()
+    {
+        connecting = true;
+
+        Plugin.SetupNewClient();
+
+        using Task connectTask = Plugin.Client.ConnectAndGetData();
+        yield return new WaitUntil(() => connectTask.IsCompleted);
+
+        connecting = false;
+    }
+
+
+    public void CreateClientAndConnect()
+    {
+        if(Plugin.Client.Connected)
+        {
+            Plugin.Logger.LogWarning("Tried to connect while already conneced!");
+            return;
+        }
+
+        if(connecting)
+        {
+            Plugin.Logger.LogWarning($"Tried to connect while already connecting!");
+            return;
+        }
+
+        StartCoroutine(ConnectCoroutine());
+    }
 
 
     private void UpdateScene(Scene current, Scene next)
