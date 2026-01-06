@@ -27,7 +27,7 @@ public static class TrapController
             return;
         }
 
-        Plugin.Logger.LogInfo($"Activated trap: {itemName}");
+        Plugin.Logger.LogInfo($"Activating trap: {itemName}");
         trapMethod?.Invoke();
     }
 

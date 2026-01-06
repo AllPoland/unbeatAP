@@ -285,4 +285,35 @@ public class Client
             DeathLinkService.OnDeathLinkReceived += HandleDeathLink;
         }
     }
+
+
+    public void DisconnectAndClose()
+    {
+        Plugin.Logger.LogInfo($"Disconnecting from {ip}:{port}");
+
+        // Doing an async void call but in theory there isn't much we would do by tracking this
+        Session.Socket.DisconnectAsync();
+
+        Session.DataStorage[Scope.Slot, HighScoreSaver.LatestScoreKey].OnValueChanged -= HighScoreSaver.OnLatestScoreUpdated;
+        Session.Items.ItemReceived -= HandleItemReceive;
+        DeathLinkService.OnDeathLinkReceived -= HandleDeathLink;
+
+        DifficultyList.Clear();
+        CharacterList.Clear();
+        HighScoreHandler.HighScores = new HighScoreList();
+        HighScoreHandler.ResetSavedRating();
+        TrapController.DeactivateTraps();
+
+        Plugin.Client = new Client();
+
+        if(ArcadeProgressController.Instance)
+        {
+            // Force reload arcade progress so removing patches can take effect
+            Plugin.Logger.LogInfo($"Force reloading progress.");
+            ArcadeProgressController.Instance.Init();
+        }
+
+        // Reload the arcade menu when disconnecting
+        LevelManager.LoadLevel(JeffBezosController.arcadeMenuScene);
+    }
 }

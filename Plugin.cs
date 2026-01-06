@@ -7,6 +7,8 @@ using UNBEATAP.AP;
 using BepInEx.Configuration;
 using UNBEATAP.Helpers;
 using UNBEATAP.Traps;
+using UnityEngine;
+using UNBEATAP.Objects;
 
 namespace UNBEATAP;
 
@@ -145,6 +147,9 @@ public class Plugin : BaseUnityPlugin
             Logger.LogInfo("Loading assets.");
             DifficultyList.Init();
 
+            Logger.LogInfo($"Creating manager.");
+            GameObject manager = new GameObject("Archipelago Manager", typeof(ArchipelagoManager));
+
             Logger.LogInfo("Setting up client.");
             Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
 
@@ -189,6 +194,9 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(ScrollSpeedTrapPatch));
                 Harmony.CreateAndPatchAll(typeof(RainbowTrapPatch));
                 Harmony.CreateAndPatchAll(typeof(TrapUpdatePatch));
+
+                // UI Patches
+                Harmony.CreateAndPatchAll(typeof(LevelManagerPatch));
             }
             catch(Exception e)
             {

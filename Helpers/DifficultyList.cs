@@ -141,6 +141,13 @@ public static class DifficultyList
     }
 
 
+    public static void Clear()
+    {
+        currentDifficulties.Clear();
+        visibleDifficulties.Clear();
+    }
+
+
     private static void LoadDifficulties()
     {
         const string diffFile = "difficulties.json";

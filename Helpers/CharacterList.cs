@@ -45,4 +45,10 @@ public static class CharacterList
     {
         return characters;
     }
+
+
+    public static void Clear()
+    {
+        characters.Clear();
+    }
 }
