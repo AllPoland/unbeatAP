@@ -95,7 +95,7 @@ public class Plugin : BaseUnityPlugin
         mutedDuration = Config.Bind(
             "Traps",
             "Mute Trap Duration",
-            15f,
+            20f,
             "The amount of time a Mute Trap mutes the music. Set to 0 to disable Mute Traps client-side."
         );
         rainbowDuration = Config.Bind(
@@ -107,13 +107,13 @@ public class Plugin : BaseUnityPlugin
         scrollSpeedDuration = Config.Bind(
             "Traps",
             "Scroll Speed Trap Duration",
-            10f,
+            20f,
             "The amount of time a Scroll Speed Trap changes the note scroll speed. Set to 0 to disable Scroll Speed Traps client-side."
         );
         stealthDuration = Config.Bind(
             "Traps",
             "Stealth Trap Duration",
-            15f,
+            20f,
             "The amount of time a Stealth Trap fades out all notes. Set to 0 to disable Stealth Traps client-side."
         );
 
