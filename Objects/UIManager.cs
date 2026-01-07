@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Arcade.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.PropertyVariants;
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour
         Transform textIdle = storyButtonContainer.GetChild(0).GetChild(0).GetChild(0);
         Transform textActive = textIdle.GetChild(0).GetChild(0);
 
+        // Disable localizers so they don't overwrite our replacement text
         textIdle.gameObject.GetComponent<GameObjectLocalizer>().enabled = false;
         textActive.gameObject.GetComponent<GameObjectLocalizer>().enabled = false;
 
@@ -36,6 +38,19 @@ public class UIManager : MonoBehaviour
 
     private void InitArcadeUI(Transform root)
     {
+        // string paletteName = UIColorPaletteUpdater.SelectedPalette;
+        // if(MenuPaletteIndex.CachedDefaultIndex.TryGetPalette(paletteName, out MenuPaletteIndex.Palette palette))
+        // {
+        //     Color[] colors = palette.palette.colors;
+        //     string[] printedColors = new string[colors.Length];
+        //     for(int i = 0; i < colors.Length; i++)
+        //     {
+        //         printedColors[i] = $"({colors[i].r}, {colors[i].g}, {colors[i].b}, {colors[i].a})";
+        //     }
+
+        //     Plugin.Logger.LogInfo($"Palette:\n    {string.Join("\n    ", printedColors)}");
+        // }
+
         if(Plugin.Client.Connected)
         {
             InitArcadeUIConnected(root);
