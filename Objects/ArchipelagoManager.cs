@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading.Tasks;
+using UBUI.Colors;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,7 +13,11 @@ public class ArchipelagoManager : MonoBehaviour
 
     public bool IsArcadeMenu { get; private set; }
 
+    public AssetBundle UIBundle;
+    public AssetBundle APUIBundle;
+
     public UIManager UIManager;
+    public ColorManager ColorManager;
 
     public event Action<Scene> OnSceneLoaded;
 
@@ -50,6 +55,19 @@ public class ArchipelagoManager : MonoBehaviour
     }
 
 
+    public void LoadAssetBundles()
+    {
+        Plugin.Logger.LogInfo("Loading UI.");
+
+        // Load all dependency assets
+        UIBundle = AssetBundle.LoadFromFile(Plugin.UiResourcesBundlePath);
+        UIBundle.LoadAllAssets();
+        UIBundle.Unload(false);
+
+        APUIBundle = AssetBundle.LoadFromFile(Plugin.ApUiBundlePath);
+    }
+
+
     private void UpdateScene(Scene current, Scene next)
     {
         IsArcadeMenu = next.name == JeffBezosController.arcadeMenuScene;
@@ -69,6 +87,9 @@ public class ArchipelagoManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        LoadAssetBundles();
+
+        ColorManager = gameObject.AddComponent<ColorManager>();
         UIManager = gameObject.AddComponent<UIManager>();
 
         SceneManager.activeSceneChanged += UpdateScene;

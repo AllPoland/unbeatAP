@@ -52,6 +52,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="UNBEATABLE-UI-Resources\Assets\Editor\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Assets\songs.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -61,5 +65,14 @@
     <None Update="Assets\difficulties.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="UNBEATABLE-UI-Resources\Assets\AssetBundles\unbeatable-ui-resources">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UNBEATABLE-UI-Resources\Assets\AssetBundles\unbeatable-ui-archipelago">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

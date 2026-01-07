@@ -21,6 +21,10 @@ public class Plugin : BaseUnityPlugin
     public static readonly string AssetsFolder = PluginFolder + "/Assets";
     public static readonly string SaveFolder = PluginFolder + "/Saves";
 
+    public static readonly string AssetBundleFolder = PluginFolder + "/UNBEATABLE-UI-Resources/Assets/AssetBundles";
+    public static readonly string UiResourcesBundlePath = AssetBundleFolder + "/unbeatable-ui-resources";
+    public static readonly string ApUiBundlePath = AssetBundleFolder + "/unbeatable-ui-archipelago";
+
     internal static new ManualLogSource Logger;
 
     private static Client _client = new Client();

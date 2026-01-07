@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
 {
     private const string disconnectText = "<mspace=11>//<mspace=17> </mspace><cspace=0.35em>disconnect.";
 
+    private const string ArchipelagoConnectionScreen = "ArchipelagoConnectionScreen.prefab";
+
     private ArchipelagoManager Manager => ArchipelagoManager.Instance;
 
 
@@ -36,25 +38,36 @@ public class UIManager : MonoBehaviour
     }
 
 
+    private void InitArcadeUIDisconnected(Transform root)
+    {
+        Transform screenArea = root.GetChild(1);
+        Transform mainScreens = screenArea.GetChild(1);
+        RectTransform mainMenu = (RectTransform)mainScreens.GetChild(1);
+
+        GameObject connectionScreen = Manager.APUIBundle.LoadAsset<GameObject>(ArchipelagoConnectionScreen);
+        Instantiate(connectionScreen, mainMenu, false);
+    }
+
+
     private void InitArcadeUI(Transform root)
     {
-        // string paletteName = UIColorPaletteUpdater.SelectedPalette;
-        // if(MenuPaletteIndex.CachedDefaultIndex.TryGetPalette(paletteName, out MenuPaletteIndex.Palette palette))
-        // {
-        //     Color[] colors = palette.palette.colors;
-        //     string[] printedColors = new string[colors.Length];
-        //     for(int i = 0; i < colors.Length; i++)
-        //     {
-        //         printedColors[i] = $"({colors[i].r}, {colors[i].g}, {colors[i].b}, {colors[i].a})";
-        //     }
-
-        //     Plugin.Logger.LogInfo($"Palette:\n    {string.Join("\n    ", printedColors)}");
-        // }
+        string paletteName = UIColorPaletteUpdater.SelectedPalette;
+        if(MenuPaletteIndex.CachedDefaultIndex.TryGetPalette(paletteName, out MenuPaletteIndex.Palette palette))
+        {
+            Color[] colors = palette.palette?.colors;
+            if(colors == null)
+            {
+                Manager.ColorManager.ResetColors();
+            }
+            else Manager.ColorManager.SetColors(colors);
+        }
+        else Manager.ColorManager.ResetColors();
 
         if(Plugin.Client.Connected)
         {
             InitArcadeUIConnected(root);
         }
+        else InitArcadeUIDisconnected(root);
     }
 
 
