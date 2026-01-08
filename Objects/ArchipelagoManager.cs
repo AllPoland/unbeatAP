@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Threading.Tasks;
 using UBUI.Colors;
+using UBUI.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -59,12 +60,23 @@ public class ArchipelagoManager : MonoBehaviour
     {
         Plugin.Logger.LogInfo("Loading UI.");
 
-        // Load all dependency assets
-        UIBundle = AssetBundle.LoadFromFile(Plugin.UiResourcesBundlePath);
-        UIBundle.LoadAllAssets();
-        UIBundle.Unload(false);
+        try
+        {
+            // Load all dependency assets
+            UIBundle = AssetBundle.LoadFromFile(Plugin.UiResourcesBundlePath);
+            UIBundle.LoadAllAssets();
+            UIBundle.Unload(false);
 
-        APUIBundle = AssetBundle.LoadFromFile(Plugin.ApUiBundlePath);
+            APUIBundle = AssetBundle.LoadFromFile(Plugin.ApUiBundlePath);
+
+            // These manifest files let us restore custom components on prefabs
+            PrefabInitializer.AddComponentManifest(Plugin.UiResourcesBundlePath);
+            PrefabInitializer.AddComponentManifest(Plugin.ApUiBundlePath);
+        }
+        catch(Exception e)
+        {
+            Plugin.Logger.LogError($"Failed to load AssetBundles with error: {e.Message}\n    {e.StackTrace}");
+        }
     }
 
 
