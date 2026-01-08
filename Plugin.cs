@@ -24,6 +24,7 @@ public class Plugin : BaseUnityPlugin
 
     public static readonly string AssetBundleFolder = PluginFolder + "/UNBEATABLE-UI-Resources/Assets/AssetBundles";
     public static readonly string UiResourcesBundlePath = AssetBundleFolder + "/unbeatable-ui-resources";
+    public static readonly string FontResourcesBundlePath = AssetBundleFolder + "/unbeatable-ui-fonts";
     public static readonly string ApUiBundlePath = AssetBundleFolder + "/unbeatable-ui-archipelago";
 
     internal static new ManualLogSource Logger;

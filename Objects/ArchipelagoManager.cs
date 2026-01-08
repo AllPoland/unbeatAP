@@ -70,6 +70,13 @@ public class ArchipelagoManager : MonoBehaviour
             AssetBundle uiBundle = AssetBundle.LoadFromFile(Plugin.UiResourcesBundlePath);
             uiBundle.LoadAllAssets();
 
+            // For some reason, the font *only* works if you load the asset, *then* unload the bundle
+            // No idea why this is the case, but this means we need to put it in a separate bundle
+            // because for any other asset, unloading the bundle also makes the asset inaccessible
+            AssetBundle fontBundle = AssetBundle.LoadFromFile(Plugin.FontResourcesBundlePath);
+            fontBundle.LoadAllAssets();
+            fontBundle.Unload(false);
+
             APUIBundle = AssetBundle.LoadFromFile(Plugin.ApUiBundlePath);
 
             // These manifest files let us restore custom components on prefabs

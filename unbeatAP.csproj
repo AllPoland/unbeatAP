@@ -74,6 +74,11 @@
     <Content Include="UNBEATABLE-UI-Resources\Assets\AssetBundles\unbeatable-ui-resources-components.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+
+    <Content Include="UNBEATABLE-UI-Resources\Assets\AssetBundles\unbeatable-ui-fonts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
     <Content Include="UNBEATABLE-UI-Resources\Assets\AssetBundles\unbeatable-ui-archipelago">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
