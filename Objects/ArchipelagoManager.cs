@@ -69,7 +69,6 @@ public class ArchipelagoManager : MonoBehaviour
             // Load all dependency assets
             AssetBundle uiBundle = AssetBundle.LoadFromFile(Plugin.UiResourcesBundlePath);
             uiBundle.LoadAllAssets();
-            uiBundle.Unload(false);
 
             APUIBundle = AssetBundle.LoadFromFile(Plugin.ApUiBundlePath);
 
