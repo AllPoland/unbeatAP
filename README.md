@@ -4,9 +4,11 @@ The mod is still in development, but is nearly ready for an alpha release. To ke
 # What is this?
 [Archipelago](https://archipelago.gg/) is a multi-world, multi-game randomizer. That means it takes items from number of different games played by different people, randomizes their locations, and combines them into one big multiplayer randomizer.
 
-This implementation brings UNBEATABLE to Archipelago, allowing you to create/join a lobby with any of their [supported games](https://archipelago.gg/games) or [community implementations](https://docs.google.com/spreadsheets/d/1iuzDTOAvdoNe8Ne8i461qGNucg5OuEoF-Ikqs8aUQZw/).
+This implementation brings UNBEATABLE to Archipelago, allowing you to create/join a lobby alongside any of their [supported games](https://archipelago.gg/games) or [community implementations](https://docs.google.com/spreadsheets/d/1iuzDTOAvdoNe8Ne8i461qGNucg5OuEoF-Ikqs8aUQZw/).
 
-When playing UNBEATABLE Arcade Mode while connected to an Archipelago lobby, you'll have a limited song selection which grows as you or your teammates find your song items, and you'll send items to other people by setting scores and gaining in-game rating.
+When playing UNBEATABLE Arcade Mode while connected to an Archipelago lobby, you'll have a limited song selection which grows as you or your teammates find your song items, and you'll find items for yourself or your teammates by setting scores and gaining in-game rating.
+
+There's no limit to the number of players or games included in a randomizer. Multiple people can play the same game, and each person can play multiple games if they want to. Archipelago can also generate a singleplayer randomizer if you want to play solo.
 
 # Installation
 An installation guide will be added once the mod is released.
