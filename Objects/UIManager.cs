@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Arcade.UI;
 using TMPro;
+using UBUI.Archipelago;
 using UBUI.Serialization;
 using UnityEngine;
 using UnityEngine.Localization.PropertyVariants;
@@ -45,7 +46,13 @@ public class UIManager : MonoBehaviour
         Transform mainScreens = screenArea.GetChild(1);
         Transform mainMenu = mainScreens.GetChild(1);
 
-        PrefabInitializer.LoadAndInstantiatePrefab(ArchipelagoConnectionScreen, ArchipelagoManager.APUIBundle, mainMenu);
+        GameObject connectObject = PrefabInitializer.LoadAndInstantiatePrefab(ArchipelagoConnectionScreen, ArchipelagoManager.APUIBundle, mainMenu);
+        APConnectionScreen connectSreen = connectObject.GetComponent<APConnectionScreen>();
+        connectSreen.OnConnect.AddListener(() =>
+        {
+            Plugin.Logger.LogInfo(connectSreen.GetConnectionInfo().ip);
+            ArchipelagoManager.Instance.CreateClientAndConnect();
+        });
     }
 
 

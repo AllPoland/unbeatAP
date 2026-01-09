@@ -81,31 +81,6 @@ public class Plugin : BaseUnityPlugin
 
     private void LoadConfig()
     {
-        configIp = Config.Bind(
-            "Connection",
-            "IP",
-            "archipelago.gg",
-            "The archipelago server IP to connect to. If you're running the game on the official website, this is probably 'archipelago.gg'."
-        );
-        configPort = Config.Bind(
-            "Connection",
-            "Port",
-            58008,
-            "The port to connect to. This is all the numbers after the ':' in the IP."
-        );
-        configSlot = Config.Bind(
-            "Connection",
-            "Slot",
-            "Player1",
-            "The player slot name to connect with. Enter what you set 'name' to in your YAML."
-        );
-        configPassword = Config.Bind(
-            "Connection",
-            "Password",
-            "",
-            "The password to use when connecting. If the server has no password, leave this empty."
-        );
-
         configDeathLink = Config.Bind(
             "Gameplay",
             "DeathLink",
@@ -143,6 +118,31 @@ public class Plugin : BaseUnityPlugin
             "Save Backup Count",
             5,
             "When connecting to Archipelago, some of your save files are backed up in case of an error. This adjusts how many backups to save before the oldest is deleted."
+        );
+
+        configIp = Config.Bind(
+            "Connection",
+            "IP",
+            "archipelago.gg",
+            "The archipelago server IP to connect to. If you're running the game on the official website, this is probably 'archipelago.gg'.\n(This is set automatically by the in-game UI)"
+        );
+        configPort = Config.Bind(
+            "Connection",
+            "Port",
+            58008,
+            "The port to connect to. This is all the numbers after the ':' in the IP.\n(This is set automatically by the in-game UI)"
+        );
+        configSlot = Config.Bind(
+            "Connection",
+            "Slot",
+            "Player1",
+            "The player slot name to connect with. Enter what you set 'name' to in your YAML.\n(This is set automatically by the in-game UI)"
+        );
+        configPassword = Config.Bind(
+            "Connection",
+            "Password",
+            "",
+            "The password to use when connecting. If the server has no password, leave this empty.\n(This is set automatically by the in-game UI)"
         );
     }
 
@@ -240,8 +240,6 @@ public class Plugin : BaseUnityPlugin
             SceneManager.activeSceneChanged += UpdateScene;
 
             Logger.LogInfo($"Plugin {PluginReleaseInfo.PLUGIN_GUID} is loaded!");
-
-            // ArchipelagoManager.Instance.CreateClientAndConnect();
         }
         catch(Exception e)
         {

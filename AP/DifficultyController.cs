@@ -40,4 +40,10 @@ public static class DifficultyController
             ArcadeSongDatabase.Instance.RefreshSongList();
         }
     }
+
+
+    public static void Clear()
+    {
+        SongItemCounts.Clear();
+    }
 }

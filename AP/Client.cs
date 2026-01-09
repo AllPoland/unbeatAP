@@ -250,6 +250,7 @@ public class Client
 
             Connected = true;
 
+            LevelManager.LoadLevel(JeffBezosController.arcadeMenuScene);
             if(SlotData.UseBreakout)
             {
                 try
@@ -322,11 +323,14 @@ public class Client
             DeathLinkService.OnDeathLinkReceived -= HandleDeathLink;
         }
 
+        DifficultyController.Clear();
         DifficultyList.Clear();
         CharacterList.Clear();
         HighScoreHandler.HighScores = new HighScoreList();
         HighScoreHandler.ResetSavedRating();
         TrapController.DeactivateTraps();
+
+        DeathHelper.Reset();
 
         Plugin.Client = new Client();
 

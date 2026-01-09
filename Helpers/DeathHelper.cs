@@ -48,4 +48,11 @@ public static class DeathHelper
 
         DeathLinkController.SendDeathLink(reason);
     }
+
+
+    public static void Reset()
+    {
+        HandleDeathSilent = false;
+        HandledDeath = false;
+    }
 }
