@@ -107,31 +107,31 @@ public class Plugin : BaseUnityPlugin
             "Gameplay",
             "DeathLink",
             false,
-            "If Death Link is enabled, you'll fail out of a song if someone else dies, and everyone else will die when you fail a song."
+            "If Death Link is enabled, you will immediately fail a song if someone else dies, and everyone else will die if you fail, restart, or quit out of a song."
         );
         mutedDuration = Config.Bind(
             "Gameplay",
             "Mute Trap Duration",
             20f,
-            "The amount of time a Mute Trap mutes the music. Set to 0 to disable Mute Traps client-side."
+            "The amount of time, in seconds, a Mute Trap mutes the music.\nSet to 0 to disable Mute Traps client-side."
         );
         rainbowDuration = Config.Bind(
             "Gameplay",
             "Rainbow Trap Duration",
             30f,
-            "The amount of time a Rainbow Trap randomizes note colors. Set to 0 to disable Rainbow Traps client-side."
+            "The amount of time, in seconds, a Rainbow Trap randomizes note colors.\nSet to 0 to disable Rainbow Traps client-side."
         );
         scrollSpeedDuration = Config.Bind(
             "Gameplay",
             "Scroll Speed Trap Duration",
             20f,
-            "The amount of time a Scroll Speed Trap changes the note scroll speed. Set to 0 to disable Scroll Speed Traps client-side."
+            "The amount of time, in seconds, a Scroll Speed Trap changes the note scroll speed.\nSet to 0 to disable Scroll Speed Traps client-side."
         );
         stealthDuration = Config.Bind(
             "Gameplay",
             "Stealth Trap Duration",
             20f,
-            "The amount of time a Stealth Trap fades out all notes. Set to 0 to disable Stealth Traps client-side."
+            "The amount of time, in seconds, a Stealth Trap fades out all notes.\nSet to 0 to disable Stealth Traps client-side."
         );
 
         backupCount = Config.Bind(
