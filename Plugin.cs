@@ -250,6 +250,7 @@ public class Plugin : BaseUnityPlugin
                 // UI Patches
                 Harmony.CreateAndPatchAll(typeof(LevelManagerPatch));
                 Harmony.CreateAndPatchAll(typeof(UIColorPaletteUpdaterPatch));
+                Harmony.CreateAndPatchAll(typeof(ArcadeMenuStateMachinePatch));
             }
             catch(Exception e)
             {
