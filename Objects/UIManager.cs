@@ -4,6 +4,7 @@ using Arcade.UI;
 using TMPro;
 using UBUI.Archipelago;
 using UBUI.Serialization;
+using UNBEATAP.AP;
 using UnityEngine;
 using UnityEngine.Localization.PropertyVariants;
 using UnityEngine.SceneManagement;
@@ -13,17 +14,26 @@ namespace UNBEATAP.Objects;
 public class UIManager : MonoBehaviour
 {
     private const string disconnectText = "<mspace=11>//<mspace=17> </mspace><cspace=0.35em>disconnect.";
-
     private const string ArchipelagoConnectionScreen = "ArchipelagoConnectionScreen.prefab";
+
+    private APConnectionScreen connectScreen;
 
     private ArchipelagoManager Manager => ArchipelagoManager.Instance;
 
 
-    private void SetConnectionInfoAndConnect(APConnectionInfo info)
+    public void HandleConnectionError(FailConnectionReason reason)
     {
+        connectScreen.CancelAndShowError(reason);
+    }
+
+
+    private void SetConnectionInfoAndConnect()
+    {
+        APConnectionInfo info = connectScreen.GetConnectionInfo();
+
         if(!int.TryParse(info.port, out int port))
         {
-            port = 0;
+            port = 58008;
         }
         Plugin.SetConnectionInfo(info.ip, port, info.slot, info.pass);
         Manager.CreateClientAndConnect();
@@ -58,11 +68,11 @@ public class UIManager : MonoBehaviour
         Transform mainMenu = mainScreens.GetChild(1);
 
         GameObject connectObject = PrefabInitializer.LoadAndInstantiatePrefab(ArchipelagoConnectionScreen, ArchipelagoManager.APUIBundle, mainMenu);
-        APConnectionScreen connectScreen = connectObject.GetComponent<APConnectionScreen>();
+        connectScreen = connectObject.GetComponent<APConnectionScreen>();
 
-        connectScreen.FindValues();
+        connectScreen.Init();
         connectScreen.SetConnectionInfo(Plugin.GetConnectionInfo());
-        connectScreen.OnConnect.AddListener(() => SetConnectionInfoAndConnect(connectScreen.GetConnectionInfo()));
+        connectScreen.OnConnect.AddListener(SetConnectionInfoAndConnect);
     }
 
 
@@ -115,5 +125,6 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Manager.OnSceneLoaded += HandleSceneLoaded;
+        Client.OnFailConnect += HandleConnectionError;
     }
 }

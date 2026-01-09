@@ -31,6 +31,9 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>lib\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="DOTween">
+      <HintPath>lib\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="FMODUnity">
       <HintPath>lib\FMODUnity.dll</HintPath>
     </Reference>

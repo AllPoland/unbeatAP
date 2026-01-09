@@ -11,6 +11,7 @@ using Challenges;
 using UNBEATAP.Helpers;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using UNBEATAP.Traps;
+using UBUI.Archipelago;
 
 namespace UNBEATAP.AP;
 
@@ -30,6 +31,7 @@ public class Client
 
     public bool MissingDlc { get; private set; }
 
+    public static event Action<FailConnectionReason> OnFailConnect;
     public event Action<ItemInfo> OnItemReceived;
 
     public readonly string ip;
@@ -190,6 +192,43 @@ public class Client
     }
 
 
+    private FailConnectionReason FailReasonFromFailure(LoginFailure failure)
+    {
+        if(failure.ErrorCodes.Contains(ConnectionRefusedError.InvalidSlot))
+        {
+            return FailConnectionReason.BadSlot;
+        }
+        if(failure.ErrorCodes.Contains(ConnectionRefusedError.InvalidGame))
+        {
+            return FailConnectionReason.BadGame;
+        }
+        if(failure.ErrorCodes.Contains(ConnectionRefusedError.InvalidPassword))
+        {
+            return FailConnectionReason.WrongPassword;
+        }
+        if(failure.ErrorCodes.Contains(ConnectionRefusedError.SlotAlreadyTaken))
+        {
+            return FailConnectionReason.SlotTaken;
+        }
+        if(failure.ErrorCodes.Contains(ConnectionRefusedError.InvalidItemsHandling))
+        {
+            return FailConnectionReason.BadItemHandle;
+        }
+        if(failure.ErrorCodes.Contains(ConnectionRefusedError.IncompatibleVersion))
+        {
+            return FailConnectionReason.BadVersion;
+        }
+
+        if(failure.Errors.Contains("A task was canceled."))
+        {
+            // This is the message for a timeout for some reason
+            return FailConnectionReason.Timeout;
+        }
+
+        return FailConnectionReason.General;
+    }
+
+
     public async Task ConnectAndGetData()
     {
         Plugin.Logger.LogInfo($"Connecting to {ip}:{port} with game {Plugin.GameName} as {slot}");
@@ -223,11 +262,13 @@ public class Client
             }
             foreach(ConnectionRefusedError error in failure.ErrorCodes)
             {
-                message += $"\n    - {error}";
+                message += $"\n    -# {error}";
             }
 
             Plugin.Logger.LogError(message);
             Connected = false;
+
+            OnFailConnect?.Invoke(FailReasonFromFailure(failure));
             return;
         }
 
@@ -242,6 +283,8 @@ public class Client
 
                 SlotData = null;
                 Connected = false;
+
+                OnFailConnect?.Invoke(FailConnectionReason.BadVersion);
                 return;
             }
 
@@ -250,7 +293,6 @@ public class Client
 
             Connected = true;
 
-            LevelManager.LoadLevel(JeffBezosController.arcadeMenuScene);
             if(SlotData.UseBreakout)
             {
                 try
@@ -297,11 +339,14 @@ public class Client
                 DeathLinkService.EnableDeathLink();
                 DeathLinkService.OnDeathLinkReceived += HandleDeathLink;
             }
+
+            LevelManager.LoadLevel(JeffBezosController.arcadeMenuScene);
         }
         catch(Exception e)
         {
             Plugin.Logger.LogError($"Client failed to connect with error: {e.Message}\n    {e.StackTrace}");
             DisconnectAndClose(false);
+            OnFailConnect?.Invoke(FailConnectionReason.ClientError);
         }
     }
 

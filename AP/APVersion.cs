@@ -6,11 +6,7 @@ namespace UNBEATAP.AP;
 public static class APVersion
 {
     private static string ModVersion => PluginReleaseInfo.PLUGIN_VERSION;
-
-    private static readonly Version[] CompatibleVersions =
-    [
-        new Version(0, 1, 0)
-    ];
+    private static Version[] CompatibleVersions => PluginReleaseInfo.COMPATIBLE_VERSIONS;
 
 
     public static bool CheckConnectionCompatible(string apworldVersion, string[] apworldCompatibleVersions)
