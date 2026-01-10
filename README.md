@@ -1,5 +1,7 @@
 # Current Status
-The mod is still in development, but is nearly ready for an alpha release. To keep up to date, join the "UNBEATABLE (PC)" thread in `#future-game-design` in the [Archipelago discord server](https://discord.gg/8Z65BR2).
+This mod is in early alpha, and not guaranteed to be stable! You can download the latest release [here](https://github.com/AllPoland/unbeatAP/releases/latest).
+
+To keep up to date, join the "UNBEATABLE (PC)" thread in `#future-game-design` in the [Archipelago discord server](https://discord.gg/8Z65BR2).
 
 # What is this?
 [Archipelago](https://archipelago.gg/) is a multi-world, multi-game randomizer. That means it takes items from number of different games played by different people, randomizes their locations, and combines them into one big multiplayer randomizer.
@@ -12,7 +14,7 @@ There's no limit to the number of players or games included in a randomizer. Mul
 
 # Setup
 ## Prerequisites
-- Install the latest version of the [Archipelago Launcher(https://github.com/ArchipelagoMW/Archipelago/releases). You will need this for setting options, generating the world, and using the text client.
+- Install the latest version of the [Archipelago Launcher](https://github.com/ArchipelagoMW/Archipelago/releases). You will need this for setting options, generating the world, and using the text client.
 - Download [BepInEx Version 5.4 or later](https://github.com/BepInEx/BepInEx/releases) and keep the file handy. You will need this to install the mod.
   - **IMPORTANT:** Make sure you download the 64-bit Windows version of BepInEx, even if you aren't using Windows! It should look like `BepInEx_win_x64_x.x.xx.x.zip`.
 
