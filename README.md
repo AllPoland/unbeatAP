@@ -12,6 +12,17 @@ When playing UNBEATABLE Arcade Mode while connected to an Archipelago lobby, you
 
 There's no limit to the number of players or games included in a randomizer. Multiple people can play the same game, and each person can play multiple games if they want to. Archipelago can also generate a singleplayer randomizer if you want to play solo.
 
+# What does this change about the game?
+When you're connected to Archipelago, your progress is completely separate - any scores you set, challenges you complete, etc. will not affect your normal save.
+
+The goal of the randomizer is to reach 100 rating. This rating is calculated using a modified version of the STAR rating system which is found in the base game, except instead of only taking your top 25 scores, it aggregates all of your scores
+in a manner similar to ranking systems in other rhythm games like OSU.
+
+The actual scores you need to set to reach 100 depend on the difficulty and length settings in your specific randomizer. (An internal rating target is calculated based on what songs are available and what scores are deemed "possible" based on your
+difficulty settings. The internal rating is then scaled so that it appears on a 0-100 scale.) This means that regardless of where your skill level is, or how long you want the randomizer to be, there will be a configuration that works for you.
+
+As you gain rating, you will continually complete "checks", which send items to the multiworld. There are plans to add challenge board completions as checks as well, and optional alternatives to the rating check system.
+
 # Setup
 ## Prerequisites
 - Install the latest version of the [Archipelago Launcher](https://github.com/ArchipelagoMW/Archipelago/releases). You will need this for setting options, generating the world, and using the text client.
@@ -41,7 +52,7 @@ There's no limit to the number of players or games included in a randomizer. Mul
 - Find your game's installation folder; this is most easily done by right-clicking on UNBEATABLE on Steam, and selecting "Manage" > "Browse local files".
 
 - Extract the contents of `BepInEx_win_x64` directly to your game folder.
-  - **For Linux users:** BepInEx needs an additional setup step to run through Proton. Instructions for this can be found [here](https://docs.bepinex.dev/articles/advanced/proton_wine.html)
+  - **For Linux users:** BepInEx needs an additional setup step to run through Proton. Instructions for this can be found [here](https://docs.bepinex.dev/articles/advanced/proton_wine.html).
 
 - Download `unbeatAP.zip` from [the releases page](https://github.com/AllPoland/unbeatAP/releases/latest) and extract the contents directly to your game folder.
 
