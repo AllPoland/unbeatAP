@@ -18,10 +18,11 @@ When you're connected to Archipelago, your progress is completely separate - any
 The goal of the randomizer is to reach 100 rating. This rating is calculated using a modified version of the STAR rating system which is found in the base game, except instead of only taking your top 25 scores, it aggregates all of your scores
 in a manner similar to ranking systems in other rhythm games like OSU.
 
-The actual scores you need to set to reach 100 depend on the difficulty and length settings in your specific randomizer. (An internal rating target is calculated based on what songs are available and what scores are deemed "possible" based on your
-difficulty settings. The internal rating is then scaled so that it appears on a 0-100 scale.) This means that regardless of where your skill level is, or how long you want the randomizer to be, there will be a configuration that works for you.
+The actual scores you need to set to reach 100 depend on the difficulty and length settings in your specific randomizer. This means that regardless of where your skill level is, or how long you want the randomizer to be, there will be a configuration that works for you.
+- More specifically: an internal rating target is calculated based on which songs are included in the randomizer and what scores are deemed "possible" based on your difficulty settings. The internal rating is then scaled so that it appears as a 0-100 scale.
+- The target accuracy for each song is added in the UI, so you can easily tell what the randomizer expects you to earn from a song.
 
-As you gain rating, you will continually complete "checks", which send items to the multiworld. There are plans to add challenge board completions as checks as well, and optional alternatives to the rating check system.
+As you gain rating, you will continually complete "checks", which send items to the multiworld. There are plans to add challenge board completions as checks as well as optional alternatives to the rating check system.
 
 # Setup
 ## Prerequisites
