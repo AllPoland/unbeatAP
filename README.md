@@ -51,6 +51,8 @@ There's no limit to the number of players or games included in a randomizer. Mul
   - The IP and port are both listed in the game's room page. The IP is everything before the `:`, and the port is the 5 numbers after the `:`.
   - Set "slot" to your player name, which you set in your YAML options.
   - If the room has a password, you can also enter it in this UI. If the server has no password, leave the field empty.
+ 
+- To receive item notifications, get hints, and send Archipelago commands, you need to use the text client included with the archipelago launcher for now. An in-game console will be added at a future point.
 
 # Other Info
 ## Developers
