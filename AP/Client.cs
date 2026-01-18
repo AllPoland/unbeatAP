@@ -274,7 +274,7 @@ public class Client
 
         try
         {
-            SlotData = new SlotData(Session.DataStorage.GetSlotData());
+            SlotData = new SlotData(await Session.DataStorage.GetSlotDataAsync());
 
             if(!APVersion.CheckConnectionCompatible(SlotData.WorldVersion, SlotData.CompatibleVersions))
             {
@@ -290,8 +290,6 @@ public class Client
 
             // Backup save files in case our wacky stuff leads to breaking a save
             Plugin.DoBackup();
-
-            Connected = true;
 
             if(SlotData.UseBreakout)
             {
@@ -326,18 +324,21 @@ public class Client
             SetSecondaryCharacter(string.IsNullOrEmpty(secondarySelected) ? "Quaver" : secondarySelected);
             CharacterController.ForceEquipUnlockedCharacter();
 
-            if(ArcadeProgressController.Instance)
-            {
-                // Force reload arcade progress so patches can take effect
-                Plugin.Logger.LogInfo($"Force reloading progress.");
-                ArcadeProgressController.Instance.Init();
-            }
-
             if(deathLink)
             {
                 DeathLinkService = Session.CreateDeathLinkService();
                 DeathLinkService.EnableDeathLink();
                 DeathLinkService.OnDeathLinkReceived += HandleDeathLink;
+            }
+
+            // All connection steps are done, now send the game to archipelago mode
+            Connected = true;
+
+            if(ArcadeProgressController.Instance)
+            {
+                // Force reload arcade progress so patches can take effect
+                Plugin.Logger.LogInfo($"Force reloading progress.");
+                ArcadeProgressController.Instance.Init();
             }
 
             LevelManager.LoadLevel(JeffBezosController.arcadeMenuScene);

@@ -30,7 +30,7 @@ public class ArchipelagoManager : MonoBehaviour
 
         Plugin.SetupNewClient();
 
-        using Task connectTask = Plugin.Client.ConnectAndGetData();
+        using Task connectTask = Task.Run(Plugin.Client.ConnectAndGetData);
         yield return new WaitUntil(() => connectTask.IsCompleted);
 
         connecting = false;
