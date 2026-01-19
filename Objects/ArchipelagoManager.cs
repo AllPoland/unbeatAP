@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UBUI.Colors;
 using UBUI.Serialization;
 using UNBEATAP.AP;
+using UNBEATAP.Traps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -97,6 +98,12 @@ public class ArchipelagoManager : MonoBehaviour
     public void UpdateScene(Scene current, Scene next)
     {
         IsArcadeMenu = next.name == JeffBezosController.arcadeMenuScene;
+        if(IsArcadeMenu && Muted.IsMuted)
+        {
+            // Force unmute the music when we go back to the menu
+            Muted.UnMute();
+        }
+
         OnSceneLoaded?.Invoke(next);
     }
 
