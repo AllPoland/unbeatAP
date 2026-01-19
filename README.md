@@ -15,6 +15,8 @@ There's no limit to the number of players or games included in a randomizer. Mul
 # What does this change about the game?
 When you're connected to Archipelago, your progress is completely separate - any scores you set, challenges you complete, etc. will not affect your normal save.
 
+Most songs and characters are locked, and must be unlocked by collecting their respecting song/character items in the multiworld.
+
 The goal of the randomizer is to reach 100 rating. This rating is calculated using a modified version of the vanilla "STAR" rating system, except instead of only taking your top 25 scores, it aggregates all of your scores
 in a manner similar to ranking systems in other rhythm games like OSU.
 
