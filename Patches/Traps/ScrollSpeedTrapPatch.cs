@@ -17,7 +17,7 @@ public class ScrollSpeedTrapPatch
 
         if(ScrollSpeed.GetZoom())
         {
-            __result *= 0.6f;
+            __result *= 0.75f;
         }
 
         if(ScrollSpeed.GetCrawl())

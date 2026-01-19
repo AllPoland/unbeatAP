@@ -2,6 +2,7 @@ using HarmonyLib;
 using Rewired;
 using UNBEATAP.AP;
 using UNBEATAP.Helpers;
+using UNBEATAP.Traps;
 
 namespace UNBEATAP.Patches;
 
@@ -60,6 +61,10 @@ static class PauseMenuPatch
             {
                 // The player has selected the quit button, so trigger death link
                 DeathHelper.OnPlayerDeath(DeathLinkReason.Quit);
+                if(Muted.IsMuted)
+                {
+                    Muted.UnMute();
+                }
             }
         }
         return true;

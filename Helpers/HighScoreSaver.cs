@@ -147,8 +147,9 @@ public static class HighScoreSaver
 
     public static async Task LoadHighScores()
     {
-        if(!Plugin.Client.Connected)
+        if(Plugin.Client?.Session?.DataStorage == null)
         {
+            Plugin.Logger.LogError("Tried to load high scores without a valid session!");
             HighScoreHandler.HighScores = new HighScoreList();
             HighScoreHandler.ResetSavedRating();
             return;

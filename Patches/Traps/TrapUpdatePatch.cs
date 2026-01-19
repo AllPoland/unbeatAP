@@ -63,14 +63,22 @@ public class TrapUpdatePatch
 
         Traverse traverse = new Traverse(__instance);
         bool isFinished = traverse.Field("isFinished").GetValue<bool>();
-        if(__instance.song.gameOver || isFinished)
+        if(isFinished)
         {
             // Deactivate all traps at the end of a song
             TrapController.DeactivateTraps();
             return;
         }
 
-        if(__instance.Playing && !isFinished)
+        if(__instance.song.gameOver)
+        {
+            // Always unmute the music after leaving the song
+            if(Muted.IsMuted)
+            {
+                Muted.UnMute();
+            }
+        }
+        else if(__instance.Playing && !isFinished)
         {
             bool shouldMute = Muted.Timer.GetActive();
             if(shouldMute && !Muted.IsMuted)

@@ -1,6 +1,5 @@
 using Rhythm;
 using UNBEATAP.AP;
-using UNBEATAP.Traps;
 
 namespace UNBEATAP.Helpers;
 
@@ -28,8 +27,6 @@ public static class DeathHelper
 
     public static void OnPlayerDeath(DeathLinkReason reason)
     {
-        TrapController.DeactivateTraps();
-
         if(!Plugin.Client.deathLink)
         {
             return;
