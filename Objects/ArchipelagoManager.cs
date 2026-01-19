@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using UBUI.Colors;
 using UBUI.Serialization;
+using UNBEATAP.AP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,8 +31,11 @@ public class ArchipelagoManager : MonoBehaviour
 
         Plugin.SetupNewClient();
 
-        using Task connectTask = Task.Run(Plugin.Client.ConnectAndGetData);
-        yield return new WaitUntil(() => connectTask.IsCompleted);
+        if(Plugin.Client.Session != null)
+        {
+            using Task connectTask = Task.Run(Plugin.Client.ConnectAndGetData);
+            yield return new WaitUntil(() => connectTask.IsCompleted);
+        }
 
         connecting = false;
     }

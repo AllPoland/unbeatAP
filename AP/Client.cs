@@ -66,7 +66,15 @@ public class Client
         MissingDlc = false;
 
         Plugin.Logger.LogInfo($"Creating session with server {ip}:{port}");
-        Session = ArchipelagoSessionFactory.CreateSession(ip, port);
+
+        if(port < 0 || port > ushort.MaxValue)
+        {
+            Plugin.Logger.LogError($"Tried to set up a client with an invalid port!\n    {port} is not between 0 and {ushort.MaxValue}");
+            Session = null;
+
+            OnFailConnect?.Invoke(FailConnectionReason.ClientError);
+        }
+        else Session = ArchipelagoSessionFactory.CreateSession(ip, port);
     }
 
 
