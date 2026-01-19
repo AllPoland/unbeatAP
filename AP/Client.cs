@@ -299,6 +299,9 @@ public class Client
             // Backup save files in case our wacky stuff leads to breaking a save
             Plugin.DoBackup();
 
+            Session.Items.ItemReceived += HandleItemReceive;
+            using Task itemTask = Task.Run(GetQueuedItems);
+
             if(SlotData.UseBreakout)
             {
                 try
@@ -322,22 +325,22 @@ public class Client
             await HighScoreSaver.LoadHighScores();
             Session.DataStorage[Scope.Slot, HighScoreSaver.LatestScoreKey].OnValueChanged += HighScoreSaver.OnLatestScoreUpdated;
 
-            string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
-            string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
-
-            Session.Items.ItemReceived += HandleItemReceive;
-            GetQueuedItems();
-
-            SetPrimaryCharacter(string.IsNullOrEmpty(primarySelected) ? "Beat" : primarySelected);
-            SetSecondaryCharacter(string.IsNullOrEmpty(secondarySelected) ? "Quaver" : secondarySelected);
-            CharacterController.ForceEquipUnlockedCharacter();
-
             if(deathLink)
             {
                 DeathLinkService = Session.CreateDeathLinkService();
                 DeathLinkService.EnableDeathLink();
                 DeathLinkService.OnDeathLinkReceived += HandleDeathLink;
             }
+
+            string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
+            string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
+
+            // Make sure all items are gathered at this point, so we know what characters we have
+            await itemTask;
+
+            SetPrimaryCharacter(string.IsNullOrEmpty(primarySelected) ? "Beat" : primarySelected);
+            SetSecondaryCharacter(string.IsNullOrEmpty(secondarySelected) ? "Quaver" : secondarySelected);
+            CharacterController.ForceEquipUnlockedCharacter();
 
             // All connection steps are done, now send the game to archipelago mode
             Connected = true;
