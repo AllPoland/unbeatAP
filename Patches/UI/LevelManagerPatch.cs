@@ -12,6 +12,12 @@ public class LevelManagerPatch
     {
         if(!Plugin.Client.Connected)
         {
+            if(ArchipelagoManager.Instance.Connecting)
+            {
+                // Don't allow the player to change scenes while connecting
+                return false;
+            }
+
             return true;
         }
 

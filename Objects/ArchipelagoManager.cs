@@ -24,13 +24,13 @@ public class ArchipelagoManager : MonoBehaviour
 
     public event Action<Scene> OnSceneLoaded;
 
-    private bool connecting;
-    private bool savingHighScores;
+    public bool Connecting { get; private set; }
+    public bool SavingHighScores { get; private set; }
 
 
     private IEnumerator ConnectCoroutine()
     {
-        connecting = true;
+        Connecting = true;
 
         Plugin.SetupNewClient();
 
@@ -40,18 +40,18 @@ public class ArchipelagoManager : MonoBehaviour
             yield return new WaitUntil(() => connectTask.IsCompleted);
         }
 
-        connecting = false;
+        Connecting = false;
     }
 
 
     private IEnumerator SaveHighScoresCoroutine()
     {
-        savingHighScores = true;
+        SavingHighScores = true;
 
         using Task saveTask = Task.Run(HighScoreSaver.SaveHighScores);
         yield return new WaitUntil(() => saveTask.IsCompleted);
 
-        savingHighScores = false;
+        SavingHighScores = false;
     }
 
 
@@ -63,7 +63,7 @@ public class ArchipelagoManager : MonoBehaviour
             return;
         }
 
-        if(connecting)
+        if(Connecting)
         {
             Plugin.Logger.LogWarning($"Tried to connect while already connecting!");
             return;
@@ -75,7 +75,7 @@ public class ArchipelagoManager : MonoBehaviour
 
     public void SaveHighScores()
     {
-        if(savingHighScores)
+        if(SavingHighScores)
         {
             Plugin.Logger.LogWarning("Tried to save high scores while already saving!");
             return;
