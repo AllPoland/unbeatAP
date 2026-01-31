@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UBUI.Colors;
 using UBUI.Serialization;
 using UNBEATAP.AP;
+using UNBEATAP.Helpers;
 using UNBEATAP.Traps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,6 +25,7 @@ public class ArchipelagoManager : MonoBehaviour
     public event Action<Scene> OnSceneLoaded;
 
     private bool connecting;
+    private bool savingHighScores;
 
 
     private IEnumerator ConnectCoroutine()
@@ -42,6 +44,17 @@ public class ArchipelagoManager : MonoBehaviour
     }
 
 
+    private IEnumerator SaveHighScoresCoroutine()
+    {
+        savingHighScores = true;
+
+        using Task saveTask = Task.Run(HighScoreSaver.SaveHighScores);
+        yield return new WaitUntil(() => saveTask.IsCompleted);
+
+        savingHighScores = false;
+    }
+
+
     public void CreateClientAndConnect()
     {
         if(Plugin.Client.Connected)
@@ -57,6 +70,18 @@ public class ArchipelagoManager : MonoBehaviour
         }
 
         StartCoroutine(ConnectCoroutine());
+    }
+
+
+    public void SaveHighScores()
+    {
+        if(savingHighScores)
+        {
+            Plugin.Logger.LogWarning("Tried to save high scores while already saving!");
+            return;
+        }
+
+        StartCoroutine(SaveHighScoresCoroutine());
     }
 
 

@@ -1,7 +1,7 @@
 using Arcade.Utils;
 using Challenges;
 using HarmonyLib;
-using UNBEATAP.Helpers;
+using UNBEATAP.Objects;
 
 namespace UNBEATAP.Patches;
 
@@ -53,7 +53,7 @@ public class ProfileInfoPatch
         // Still reset stuff for calculations, but use our own method for saving highscores
         PlayerStatsHelper.Instance?.ResetSavedValues();
         HighScoreList.HighScoresUpdated?.Invoke();
-        HighScoreSaver.SaveHighScores();
+        ArchipelagoManager.Instance.SaveHighScores();
         return false;
     }
 }
