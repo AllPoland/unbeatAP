@@ -4,7 +4,8 @@
         "easy",
         "normal",
         "hard",
-        "unbeatable"
+        "unbeatable",
+        "star"
     ],
     "proper rhythm tutorial": [
         "beginner"
@@ -16,6 +17,14 @@
         "hard",
         "unbeatable",
         "star"
+    ],
+    "familiar": [
+        "tutorial",
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
     ],
     "dialtone ac": [
         "beginner",
@@ -112,6 +121,13 @@
         "star"
     ],
     "bookendsong ac": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "mic check": [
         "beginner",
         "easy",
         "normal",
@@ -263,6 +279,13 @@
         "unbeatable"
     ],
     "infinity chase ac": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "low pitch": [
         "beginner",
         "easy",
         "normal",
@@ -504,6 +527,13 @@
         "unbeatable",
         "star"
     ],
+    "beyond the heart": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
     "k moe": [
         "beginner",
         "easy",
@@ -614,19 +644,5 @@
         "hard",
         "unbeatable",
         "star"
-    ],
-    "beyond the heart": [
-        "beginner",
-        "easy",
-        "normal",
-        "hard",
-        "unbeatable"
-    ],
-    "familiar": [
-        "beginner",
-        "easy",
-        "normal",
-        "hard",
-        "unbeatable"
     ]
 }
