@@ -84,7 +84,7 @@ The source code for the .apworld (randomizer logic) can be found at [this link](
 This project uses my UI Resources repository, which you can find as a submodule in this repository or at [this link](https://github.com/AllPoland/UNBEATABLE-UI-Resources).
 
 # Credits
-[@Maya](https://github.com/estradiol-valerate) for help with reverse-engineering and early mechanic implementations.
+[@Maya](https://github.com/estradiol-valerate) for help with reverse-engineering and additional programming.
 
 Members of the [UNBEATABLE Modding Community](https://discord.gg/4t8wrZ69Fx), including @zachava and @erik_x for extra reverse-engineering help.
 
