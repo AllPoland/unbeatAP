@@ -32,4 +32,19 @@ public class MainProgressionContainerPatch
         // Disable any progression unlock triggers
         return false;
     }
+    
+    
+    [HarmonyPatch("GetUnlockName")]
+    [HarmonyPrefix]
+    static bool UnlockNamePatch(ref MainProgressionContainer.Unlock unlock, ref string __result)
+    {
+        if(unlock.UnlockManager == "Archipelago" && Plugin.Client.Connected)
+        {
+            // If the unlock manager is named Archipelago, make the name what we want.
+            __result = unlock.UnlockName;
+            return false;
+        }
+
+        return true;
+    }
 }

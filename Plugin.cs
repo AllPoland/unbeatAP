@@ -180,6 +180,12 @@ public class Plugin : BaseUnityPlugin
             new GameObject("Archipelago Manager", typeof(ArchipelagoManager));
         }
 
+        if(next.name == "ArcadeModeMenu" && Client.Connected)
+        {
+            // I really wish I knew why, but it only works when the scene first loads. Put this anywhere else and it causes a Unity crash
+            NotificationHelper.ShowNotification();
+        }
+
         ArchipelagoManager.Instance.UpdateScene(current, next);
     }
 

@@ -136,11 +136,29 @@ public class Client
 
         if(checkedLocations.Count > 0)
         {
+            // Don't send check if it's already checked! On first connect it sometimes sends the last check, even though it's already checked.
+            if(Session.Locations.AllLocationsChecked.Contains(checkedLocations.Last())) return;
             Plugin.Logger.LogInfo($"Completing check for {ratingLocPrefix}{LastCheckedLocation}");
             Session.Locations.CompleteLocationChecks(checkedLocations.ToArray());
+            HandleItemSend(checkedLocations);
         }
     }
 
+    private void HandleItemSend(List<long> ids)
+    {
+        if(!Plugin.Client.Connected) return;
+        Task<Dictionary<long, ScoutedItemInfo>> items = Session.Locations.ScoutLocationsAsync(ids.ToArray());
+        items.Wait();
+        Dictionary<long, ScoutedItemInfo> result = items.Result;
+        result.Values.ToList().ForEach(x =>
+            {
+                if(!x.IsReceiverRelatedToActivePlayer)
+                {
+                    NotificationHelper.QueueNotification($"Sent {x.ItemDisplayName} to {x.Player.Name}");
+                }
+            }
+        );
+    }
 
     private void HandleItemReceive(IReceivedItemsHelper helper)
     {

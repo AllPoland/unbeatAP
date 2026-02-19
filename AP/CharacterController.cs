@@ -51,5 +51,8 @@ public static class CharacterController
 
         Plugin.Logger.LogInfo($"Successfully collected Character: {charName}");
         ForceEquipUnlockedCharacter();
+        // Don't queue notification if not finished connecting
+        if(!Plugin.Client.Connected) return;
+        NotificationHelper.QueueNotification($"Character: {charName}");
     }
 }
