@@ -113,7 +113,6 @@ public class SlotData
             }
         }
 
-        SkillRating /= 100f;
         AccCurveBias /= 100f;
         AccCurveLowBias /= 100f;
         AccCurveCutoff /= 100f;

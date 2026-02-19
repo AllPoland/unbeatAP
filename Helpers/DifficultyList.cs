@@ -111,31 +111,39 @@ public static class DifficultyList
             return false;
         }
 
-        int diffRank = diffIndex + minDiff;
-        while(diffRank <= maxDiff && diffRank <= DiffNameFromRank.Length)
+        // Gather all of the difficulties the song has within our minimum and maximum ranges
+        List<string> songDifficulties = new List<string>();
+        for(int rank = minDiff; rank <= maxDiff && rank <= DiffNameFromRank.Length; rank++)
         {
-            string targetDiff = DiffNameFromRank[diffRank];
-            if(!difficulties.Contains(targetDiff))
+            string diffName = DiffNameFromRank[rank];
+            if(difficulties.Contains(diffName))
             {
-                // We skip to collected the lowest difficulty rank the song has in our range
-                diffRank++;
-                continue;
+                songDifficulties.Add(diffName);
             }
-
-            string newDifficulty = difficulties[diffRank];
-            if(currentDifficulties.Contains($"{internalName}{NameSeparator}{newDifficulty}"))
-            {
-                // We've already unlocked this difficulty - this means our target diff index is higher
-                diffRank++;
-                continue;
-            }
-
-            AddDifficulty(internalName, newDifficulty);
-            return true;
         }
 
-        Plugin.Logger.LogWarning($"Received extra difficulty for song: {internalName}");
-        return false;
+        if(songDifficulties.Count == 0)
+        {
+            Plugin.Logger.LogWarning($"Received item for song with no included difficulties: {songName}");
+            return false;
+        }
+
+        if(diffIndex < 0)
+        {
+            Plugin.Logger.LogError($"Target difficulty index is less than zero! ({internalName})");
+            return false;
+        }
+
+        if(diffIndex >= songDifficulties.Count)
+        {
+            Plugin.Logger.LogWarning($"Received extra difficulty for song: {internalName}");
+            return false;
+        }
+
+        // Get the [diffIndex]th difficulty from the ones that are included in the rando
+        string targetDiff = songDifficulties[diffIndex];
+        AddDifficulty(internalName, targetDiff);
+        return true;
     }
 
 
