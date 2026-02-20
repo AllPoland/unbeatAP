@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arcade.Progression;
+using Arcade.UI.SongSelect;
 
 namespace UNBEATAP.Helpers;
 
@@ -20,6 +21,13 @@ public class NotificationHelper
             // Show the notification if any are queued 
             ArcadeNotification.Show<ArcadeRewardsNotification>("Rewards").Fill(unlockqueue);
             unlockqueue.Clear();
+            if(ArcadeSongDatabase.Instance)
+            {
+                // Refresh song database after showing notification
+                // Doing this in DifficultyController made the game heavily lag on release
+                ArcadeSongDatabase.Instance.LoadDatabase();
+                ArcadeSongDatabase.Instance.RefreshSongList();
+            }
         }
     }
 

@@ -36,12 +36,6 @@ public static class DifficultyController
         // Skip everything else if not finished connecting
         if(!Plugin.Client.Connected) return;
         NotificationHelper.QueueNotification($"Progressive Song #{unlockedDiffIndex + 1}: {songName}");
-        if(!JeffBezosController.isPlayingBeatmap && ArcadeSongDatabase.Instance)
-        {
-            // Since we're in the song select screen, refresh now
-            ArcadeSongDatabase.Instance.LoadDatabase();
-            ArcadeSongDatabase.Instance.RefreshSongList();
-        }
     }
 
 
