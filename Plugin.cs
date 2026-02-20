@@ -258,6 +258,7 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(UIColorPaletteUpdaterPatch));
                 Harmony.CreateAndPatchAll(typeof(ArcadeMenuStateMachinePatch));
                 Harmony.CreateAndPatchAll(typeof(UIFocusOnButtonPatch));
+                Harmony.CreateAndPatchAll(typeof(RewardsNotificationPatch));
             }
             catch(Exception e)
             {

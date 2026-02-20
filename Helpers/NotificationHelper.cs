@@ -16,14 +16,11 @@ public class NotificationHelper
     public static void ShowNotification()
     {
         Plugin.Logger.LogInfo($"Current Unlock Queue: {unlockqueue.Count}");
-        while(unlockqueue.Any())
+        if(unlockqueue.Any())
         {
-            // Make queue into batches of 10 items. If there's too many on one notification, it will go offscreen.
-            int takecount = unlockqueue.Count >= 10 ? 10 : unlockqueue.Count;
-            IEnumerable<MainProgressionContainer.Unlock> batch = unlockqueue.Take(takecount);
-            unlockqueue = unlockqueue.Skip(takecount).ToList();
-            Plugin.Logger.LogInfo($"New Unlock Queue: {unlockqueue.Count}");
-            ArcadeNotification.Show<ArcadeRewardsNotification>("Rewards").Fill(batch.ToList());
+            // Show the notification if any are queued 
+            ArcadeNotification.Show<ArcadeRewardsNotification>("Rewards").Fill(unlockqueue);
+            unlockqueue.Clear();
         }
     }
 
