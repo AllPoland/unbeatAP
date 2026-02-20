@@ -180,12 +180,6 @@ public class Plugin : BaseUnityPlugin
             new GameObject("Archipelago Manager", typeof(ArchipelagoManager));
         }
 
-        if(next.name == "ArcadeModeMenu" && Client.Connected)
-        {
-            // I really wish I knew why, but it only works when the scene first loads. Put this anywhere else and it causes a Unity crash
-            NotificationHelper.ShowNotification();
-        }
-
         ArchipelagoManager.Instance.UpdateScene(current, next);
     }
 
@@ -273,6 +267,16 @@ public class Plugin : BaseUnityPlugin
         catch(Exception e)
         {
             Logger.LogFatal($"{e.Message}, {e.StackTrace}");
+        }
+    }
+    
+    private void Update()
+    {
+        // Only show notification if no items in queue
+        if(!Client.Session.Items.Any() && !JeffBezosController.isPlayingBeatmap && Client.Connected)
+        {
+            // Notifications must be shown in main unity thread, otherwise it causes a game crash
+            NotificationHelper.ShowNotification();
         }
     }
 }

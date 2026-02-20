@@ -15,7 +15,6 @@ public class NotificationHelper
     
     public static void ShowNotification()
     {
-        Plugin.Logger.LogInfo($"Current Unlock Queue: {unlockqueue.Count}");
         if(unlockqueue.Any())
         {
             // Show the notification if any are queued 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UNBEATAP.Helpers;
 
 namespace UNBEATAP.Traps;
 
@@ -28,6 +29,7 @@ public static class TrapController
         }
 
         Plugin.Logger.LogInfo($"Activating trap: {itemName}");
+        NotificationHelper.QueueNotification($"Trap: {itemName}");
         trapMethod?.Invoke();
     }
 
