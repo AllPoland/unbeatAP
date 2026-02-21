@@ -39,6 +39,7 @@ public class Client
     public readonly string slot;
     public readonly string password;
     public readonly bool deathLink;
+    public readonly int deathLinkBehavior;
 
 
     public Client()
@@ -48,19 +49,21 @@ public class Client
         slot = "";
         password = "";
         deathLink = false;
+        deathLinkBehavior = 0;
 
         Connected = false;
         MissingDlc = false;
     }
 
 
-    public Client(string ip, int port, string slot, string password, bool deathLink)
+    public Client(string ip, int port, string slot, string password, bool deathLink, int deathLinkBehavior)
     {
         this.ip = ip;
         this.port = port;
         this.slot = slot;
         this.password = password;
         this.deathLink = deathLink;
+        this.deathLinkBehavior = deathLinkBehavior;
 
         Connected = false;
         MissingDlc = false;
