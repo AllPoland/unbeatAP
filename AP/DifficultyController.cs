@@ -32,13 +32,10 @@ public static class DifficultyController
 
         SongItemCounts[songName] = unlockedDiffIndex + 1;
         Plugin.Logger.LogInfo($"Successfully collected Progressive Song #{unlockedDiffIndex + 1}: {songName}");
-
-        if(!JeffBezosController.isPlayingBeatmap && ArcadeSongDatabase.Instance && Plugin.Client.Connected)
-        {
-            // Since we're in the song select screen, refresh now
-            ArcadeSongDatabase.Instance.LoadDatabase();
-            ArcadeSongDatabase.Instance.RefreshSongList();
-        }
+        
+        // Skip everything else if not finished connecting
+        if(!Plugin.Client.Connected) return;
+        NotificationHelper.QueueNotification($"Progressive Song #{unlockedDiffIndex + 1}: {songName}");
     }
 
 
