@@ -66,7 +66,7 @@ To get the best experience with this randomizer, it is recommended that you set 
 - If you would like to configure Death Link, trap durations, or item notifications, navigate to `BepInEx/config` and edit `unbeatAP.cfg`. The connection and backup options do not need to be modified here.
 
 - Launch UNBEATABLE, go to Arcade Mode, and a new Archipelago connection UI should appear. Input your room info and click "connect", and the game will reload with Archipelago active!
-  - The IP and port are both listed in the game's room page. The IP is everything before the `:`, and the port is the 5 numbers after the `:`. I.e. `archipelago.gg:12345` is IP `archipelago.gg` and port `12345`.
+  - The IP and port are both listed in the game's room page. The IP is everything before the `:`, and the port is the 5-digit number after the `:`. I.e. `archipelago.gg:12345` is IP `archipelago.gg` and port `12345`.
   - Set "slot" to your player name, which you set in your YAML options.
   - If the room has a password, you can also enter it in this UI. If the server has no password, leave the field empty.
  
