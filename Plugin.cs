@@ -57,6 +57,7 @@ public class Plugin : BaseUnityPlugin
     private static ConfigEntry<string> configPassword;
 
     private static ConfigEntry<bool> configDeathLink;
+    private static ConfigEntry<int> configDeathLinkBehavior;
 
     private static ConfigEntry<int> backupCount;
 
@@ -70,7 +71,7 @@ public class Plugin : BaseUnityPlugin
         }
 
         Logger.LogInfo("Setting up client.");
-        Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value);
+        Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value, configDeathLinkBehavior.Value);
     }
 
 
@@ -108,7 +109,13 @@ public class Plugin : BaseUnityPlugin
             "Gameplay",
             "DeathLink",
             false,
-            "If Death Link is enabled, you will immediately fail a song if someone else dies, and everyone else will die if you fail, restart, or quit out of a song."
+            "If Death Link is enabled, you will immediately fail a song if someone else dies, and everyone else will die based on your Death Link behavior."
+        );
+        configDeathLinkBehavior = Config.Bind(
+            "Gameplay",
+            "Death Link Behavior",
+            0,
+            "Changes what Death Link counts as a death\n0: Send death only on fail\n1: Send death on fail and quit\n2: Send death on fail and restart\n3: Send death on fail, restart and quit"
         );
         mutedDuration = Config.Bind(
             "Gameplay",

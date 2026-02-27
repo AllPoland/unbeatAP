@@ -27,6 +27,14 @@ public static class DeathLinkController
             return;
         }
 
+        switch (Plugin.Client.deathLinkBehavior)
+        {
+            case 0 when reason != DeathLinkReason.Fail:
+            case 1 when reason == DeathLinkReason.Restart:
+            case 2 when reason == DeathLinkReason.Quit:
+                return;
+        }
+
         DeathLinkService service = Plugin.Client.DeathLinkService;
         string message = DeathLinkMessage[reason].Replace("{player}", Plugin.Client.slot);
         DeathLink deathLink = new DeathLink(Plugin.Client.slot, message);
