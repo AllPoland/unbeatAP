@@ -3,7 +3,6 @@ using System.Collections;
 using System.Threading.Tasks;
 using UBUI.Colors;
 using UBUI.Serialization;
-using UNBEATAP.AP;
 using UNBEATAP.Helpers;
 using UNBEATAP.Traps;
 using UnityEngine;
@@ -156,5 +155,16 @@ public class ArchipelagoManager : MonoBehaviour
     private void OnDestroy()
     {
         Plugin.Logger.LogWarning("ArchipelagoManager was destroyed!");
+    }
+
+
+    private void Update()
+    {
+        // Only show notification if no items in queue
+        if(Plugin.Client.Connected && IsArcadeMenu && !(Plugin.Client.Session?.Items.Any() ?? false))
+        {
+            // Notifications must be shown in main unity thread, otherwise it causes a game crash
+            NotificationHelper.ShowNotification();
+        }
     }
 }

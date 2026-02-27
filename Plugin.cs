@@ -28,7 +28,6 @@ public class Plugin : BaseUnityPlugin
     public static readonly string FontResourcesBundlePath = AssetBundleFolder + "/unbeatable-ui-fonts";
     public static readonly string ApUiBundlePath = AssetBundleFolder + "/unbeatable-ui-archipelago";
 
-    private static bool inMenu;
     internal static new ManualLogSource Logger;
 
     private static Client _client = new Client();
@@ -188,8 +187,6 @@ public class Plugin : BaseUnityPlugin
             new GameObject("Archipelago Manager", typeof(ArchipelagoManager));
         }
 
-        inMenu = next.name == JeffBezosController.arcadeMenuScene;
-
         ArchipelagoManager.Instance.UpdateScene(current, next);
     }
 
@@ -277,16 +274,6 @@ public class Plugin : BaseUnityPlugin
         catch(Exception e)
         {
             Logger.LogFatal($"{e.Message}, {e.StackTrace}");
-        }
-    }
-    
-    private void Update()
-    {
-        // Only show notification if no items in queue
-        if(!Client.Session.Items.Any() && inMenu && Client.Connected)
-        {
-            // Notifications must be shown in main unity thread, otherwise it causes a game crash
-            NotificationHelper.ShowNotification();
         }
     }
 }
