@@ -13,7 +13,7 @@ When playing UNBEATABLE Arcade Mode while connected to an Archipelago lobby, you
 There's no limit to the number of players or games included in a randomizer. Multiple people can play the same game, and each person can play multiple games if they want to. Archipelago can also generate a singleplayer randomizer if you want to play solo.
 
 # What does this change about the game?
-When you're connected to Archipelago, your progress is completely separate - any scores you set, challenges you complete, etc. will not affect your normal save.
+When you're connected to Archipelago, your progress is completely separate - any scores you set, challenges you complete, etc. will not affect the leaderboards or your normal save.
 
 Most songs and characters are locked, and must be unlocked by collecting their respecting song/character items in the multiworld.
 
@@ -63,14 +63,14 @@ To get the best experience with this randomizer, it is recommended that you set 
 
 - Download `unbeatAP.zip` from the [releases page](https://github.com/AllPoland/unbeatAP/releases/latest) and extract the contents directly to your game folder.
 
-- If you would like to enable Death Link or adjust trap durations, navigate to `BepInEx/config` and edit `unbeatAP.cfg`. The connection and backup options do not need to be modified here.
+- If you would like to configure Death Link, trap durations, or item notifications, navigate to `BepInEx/config` and edit `unbeatAP.cfg`. The connection and backup options do not need to be modified here.
 
 - Launch UNBEATABLE, go to Arcade Mode, and a new Archipelago connection UI should appear. Input your room info and click "connect", and the game will reload with Archipelago active!
-  - The IP and port are both listed in the game's room page. The IP is everything before the `:`, and the port is the 5 numbers after the `:`.
+  - The IP and port are both listed in the game's room page. The IP is everything before the `:`, and the port is the 5 numbers after the `:`. I.e. `archipelago.gg:12345` is IP `archipelago.gg` and port `12345`.
   - Set "slot" to your player name, which you set in your YAML options.
   - If the room has a password, you can also enter it in this UI. If the server has no password, leave the field empty.
  
-- To receive item notifications, get hints, and send Archipelago commands, you need to use the text client included with the Archipelago Launcher for now. An in-game console will be added at a future point.
+- To get hints and send Archipelago commands, you need to use the text client included with the Archipelago Launcher for now. An in-game console will be added at a future point.
 
 # Other Info
 ## Developers
