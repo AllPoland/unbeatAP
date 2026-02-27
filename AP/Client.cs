@@ -17,6 +17,8 @@ namespace UNBEATAP.AP;
 
 public class Client
 {
+    private const string ratingLocPrefix = "Rating Unlock ";
+
     public bool Connected { get; private set; }
 
     public ArchipelagoSession Session { get; private set; }
@@ -38,8 +40,13 @@ public class Client
     public readonly int port;
     public readonly string slot;
     public readonly string password;
+
     public readonly bool deathLink;
-    public readonly int deathLinkBehavior;
+    public readonly DeathLinkReason deathLinkBehavior;
+
+    public readonly NotificationPopupMode popupBehavior;
+
+    private Dictionary<long, ScoutedItemInfo> itemFromLocationID;
 
 
     public Client()
@@ -49,21 +56,54 @@ public class Client
         slot = "";
         password = "";
         deathLink = false;
-        deathLinkBehavior = 0;
+        deathLinkBehavior = DeathLinkReason.Fail;
 
         Connected = false;
         MissingDlc = false;
     }
 
 
-    public Client(string ip, int port, string slot, string password, bool deathLink, int deathLinkBehavior)
+    public Client(string ip, int port, string slot, string password, bool deathLink, int deathLinkBehavior, int popupBehavior)
     {
         this.ip = ip;
         this.port = port;
         this.slot = slot;
         this.password = password;
         this.deathLink = deathLink;
-        this.deathLinkBehavior = deathLinkBehavior;
+
+        this.deathLinkBehavior = DeathLinkReason.Fail;
+        switch(deathLinkBehavior)
+        {
+            default:
+            case 0:
+                break;
+            case 1:
+                this.deathLinkBehavior |= DeathLinkReason.Quit;
+                break;
+            case 2:
+                this.deathLinkBehavior |= DeathLinkReason.Restart;
+                break;
+            case 3:
+                this.deathLinkBehavior |= DeathLinkReason.Quit | DeathLinkReason.Restart;
+                break;
+        }
+
+        switch(popupBehavior)
+        {
+            default:
+            case 0:
+                this.popupBehavior = NotificationPopupMode.None;
+                break;
+            case 1:
+                this.popupBehavior = NotificationPopupMode.Sent;
+                break;
+            case 2:
+                this.popupBehavior = NotificationPopupMode.Received;
+                break;
+            case 3:
+                this.popupBehavior = NotificationPopupMode.Sent | NotificationPopupMode.Received;
+                break;
+        }
 
         Connected = false;
         MissingDlc = false;
@@ -117,8 +157,6 @@ public class Client
 
     public void HandleRatingUpdate(float newRating)
     {
-        const string ratingLocPrefix = "Rating Unlock ";
-
         // The in-game rating is always scaled to be 0 to 100
         if(newRating >= 100f)
         {
@@ -149,18 +187,15 @@ public class Client
 
     private void HandleItemSend(List<long> ids)
     {
-        if(!Plugin.Client.Connected) return;
-        Task<Dictionary<long, ScoutedItemInfo>> items = Session.Locations.ScoutLocationsAsync(ids.ToArray());
-        items.Wait();
-        Dictionary<long, ScoutedItemInfo> result = items.Result;
-        result.Values.ToList().ForEach(x =>
+        foreach(long id in ids)
+        {
+            // Only show popups for items we're sending to other people
+            ScoutedItemInfo item = itemFromLocationID[id];
+            if(!item.IsReceiverRelatedToActivePlayer)
             {
-                if(!x.IsReceiverRelatedToActivePlayer)
-                {
-                    NotificationHelper.QueueNotification($"Sent {x.ItemDisplayName} to {x.Player.Name}");
-                }
+                NotificationHelper.QueueNotification($"Sent {item.ItemDisplayName} to {item.Player.Name}", NotificationPopupMode.Sent);
             }
-        );
+        }
     }
 
     private void HandleItemReceive(IReceivedItemsHelper helper)
@@ -175,17 +210,18 @@ public class Client
         ReceivedItems.Add(item);
 
         string name = item.ItemName;
+        bool sentBySelf = item.Player.Slot == Session.Players.ActivePlayer.Slot;
         if(name.StartsWith(DifficultyController.SongNamePrefix))
         {
-            DifficultyController.AddProgressiveSong(name);
+            DifficultyController.AddProgressiveSong(name, sentBySelf);
         }
         else if(name.StartsWith(CharacterController.CharPrefix))
         {
-            CharacterController.AddCharacter(name);
+            CharacterController.AddCharacter(name, sentBySelf);
         }
         else if(name.EndsWith(TrapController.TrapSuffix))
         {
-            TrapController.ActivateTrap(name);
+            TrapController.ActivateTrap(name, sentBySelf);
         }
         else
         {
@@ -212,6 +248,20 @@ public class Client
 
             HandleItemReceive(Session.Items);
         }
+    }
+
+
+    private async Task ScoutLocationItems()
+    {
+        // Scout all locations ahead of time so that we don't have to wait for responses later
+        long[] allIDs = new long[SlotData.ItemCount];
+        for(int i = 0; i < SlotData.ItemCount; i++)
+        {
+            int locIndex = i + 1;
+            allIDs[i] = Session.Locations.GetLocationIdFromName(Plugin.GameName, $"{ratingLocPrefix}{locIndex}");
+        }
+
+        itemFromLocationID = await Session.Locations.ScoutLocationsAsync(HintCreationPolicy.None, allIDs);
     }
 
 
@@ -320,9 +370,6 @@ public class Client
             // Backup save files in case our wacky stuff leads to breaking a save
             Plugin.DoBackup();
 
-            Session.Items.ItemReceived += HandleItemReceive;
-            using Task itemTask = Task.Run(GetQueuedItems);
-
             if(SlotData.UseBreakout)
             {
                 try
@@ -342,6 +389,9 @@ public class Client
                 }
             }
 
+            Session.Items.ItemReceived += HandleItemReceive;
+            using Task itemTask = Task.Run(GetQueuedItems);
+
             Plugin.Logger.LogInfo("Loading previously saved high scores.");
             await HighScoreSaver.LoadHighScores();
             Session.DataStorage[Scope.Slot, HighScoreSaver.LatestScoreKey].OnValueChanged += HighScoreSaver.OnLatestScoreUpdated;
@@ -355,6 +405,8 @@ public class Client
 
             string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
             string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
+
+            await ScoutLocationItems();
 
             // Make sure all items are gathered at this point, so we know what characters we have
             await itemTask;

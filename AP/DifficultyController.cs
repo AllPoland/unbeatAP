@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UNBEATAP.Helpers;
+using UNBEATAP.Objects;
 
 namespace UNBEATAP.AP;
 
@@ -10,7 +11,7 @@ public static class DifficultyController
     private static Dictionary<string, int> SongItemCounts = new Dictionary<string, int>();
 
 
-    public static void AddProgressiveSong(string itemName)
+    public static void AddProgressiveSong(string itemName, bool sentBySelf)
     {
         string songName = itemName.Replace(SongNamePrefix, "");
 
@@ -34,7 +35,16 @@ public static class DifficultyController
         
         // Skip everything else if not finished connecting
         if(!Plugin.Client.Connected) return;
-        NotificationHelper.QueueNotification($"Progressive Song #{unlockedDiffIndex + 1}: {songName}");
+
+        ArchipelagoManager.Instance.SetSongListDirty();
+
+        NotificationPopupMode popupMode = NotificationPopupMode.Received;
+        if(sentBySelf)
+        {
+            // If we sent ourself an item, we also want to show the notification if received items are disabled
+            popupMode |= NotificationPopupMode.Sent;
+        }
+        NotificationHelper.QueueNotification($"Progressive Song #{unlockedDiffIndex + 1}: {songName}", popupMode);
     }
 
 

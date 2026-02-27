@@ -58,6 +58,8 @@ public class Plugin : BaseUnityPlugin
     private static ConfigEntry<bool> configDeathLink;
     private static ConfigEntry<int> configDeathLinkBehavior;
 
+    private static ConfigEntry<int> configPopupBehavior;
+
     private static ConfigEntry<int> backupCount;
 
 
@@ -70,7 +72,15 @@ public class Plugin : BaseUnityPlugin
         }
 
         Logger.LogInfo("Setting up client.");
-        Client = new Client(configIp.Value, configPort.Value, configSlot.Value, configPassword.Value, configDeathLink.Value, configDeathLinkBehavior.Value);
+        Client = new Client(
+            configIp.Value,
+            configPort.Value,
+            configSlot.Value,
+            configPassword.Value,
+            configDeathLink.Value,
+            configDeathLinkBehavior.Value,
+            configPopupBehavior.Value
+        );
     }
 
 
@@ -116,6 +126,7 @@ public class Plugin : BaseUnityPlugin
             0,
             "Changes what Death Link counts as a death\n0: Send death only on fail\n1: Send death on fail and quit\n2: Send death on fail and restart\n3: Send death on fail, restart and quit"
         );
+
         mutedDuration = Config.Bind(
             "Gameplay",
             "Mute Trap Duration",
@@ -139,6 +150,13 @@ public class Plugin : BaseUnityPlugin
             "Stealth Trap Duration",
             40f,
             "The amount of time, in seconds, a Stealth Trap fades out all notes.\nSet to 0 to disable Stealth Traps client-side."
+        );
+
+        configPopupBehavior = Config.Bind(
+            "Gameplay",
+            "Popup Behavior",
+            3,
+            "Changes when popups will appear for collected/received items.\n0: No popups\n1: Only show for items you send (to yourself or others)\n2: Only show for items sent to you (by yourself or others)\n3: Show for all items you send and receive"
         );
 
         backupCount = Config.Bind(

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using UNBEATAP.Helpers;
@@ -24,15 +25,14 @@ public static class DeathLinkController
     {
         if(!Plugin.Client.Connected || !Plugin.Client.deathLink || Plugin.Client.DeathLinkService == null)
         {
+            Plugin.Logger.LogInfo("DeathLink is disabled");
             return;
         }
 
-        switch (Plugin.Client.deathLinkBehavior)
+        if((Plugin.Client.deathLinkBehavior & reason) == 0)
         {
-            case 0 when reason != DeathLinkReason.Fail:
-            case 1 when reason == DeathLinkReason.Restart:
-            case 2 when reason == DeathLinkReason.Quit:
-                return;
+            Plugin.Logger.LogInfo($"Death link masked by options: {reason}");
+            return;
         }
 
         DeathLinkService service = Plugin.Client.DeathLinkService;
@@ -45,9 +45,10 @@ public static class DeathLinkController
 }
 
 
+[Flags]
 public enum DeathLinkReason
 {
-    Fail,
-    Quit,
-    Restart
+    Fail = 1,
+    Quit = 2,
+    Restart = 4
 }

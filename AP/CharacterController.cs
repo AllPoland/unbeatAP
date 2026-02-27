@@ -39,7 +39,7 @@ public static class CharacterController
     }
 
 
-    public static void AddCharacter(string itemName)
+    public static void AddCharacter(string itemName, bool sentBySelf)
     {
         string charName = itemName.Replace(CharPrefix, "");
 
@@ -53,6 +53,13 @@ public static class CharacterController
         ForceEquipUnlockedCharacter();
         // Don't queue notification if not finished connecting
         if(!Plugin.Client.Connected) return;
-        NotificationHelper.QueueNotification($"Character: {charName}");
+
+        NotificationPopupMode popupMode = NotificationPopupMode.Received;
+        if(sentBySelf)
+        {
+            // If we sent ourself an item, we also want to show the notification if received items are disabled
+            popupMode |= NotificationPopupMode.Sent;
+        }
+        NotificationHelper.QueueNotification($"Character: {charName}", popupMode);
     }
 }

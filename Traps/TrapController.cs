@@ -18,7 +18,7 @@ public static class TrapController
     };
 
 
-    public static void ActivateTrap(string itemName)
+    public static void ActivateTrap(string itemName, bool sentBySelf)
     {
         string trapName = itemName.Replace(TrapSuffix, "");
 
@@ -29,8 +29,15 @@ public static class TrapController
         }
 
         Plugin.Logger.LogInfo($"Activating trap: {itemName}");
-        NotificationHelper.QueueNotification($"Trap: {itemName}");
         trapMethod?.Invoke();
+
+        NotificationPopupMode popupMode = NotificationPopupMode.Received;
+        if(sentBySelf)
+        {
+            // If we sent ourself an item, we also want to show the notification if received items are disabled
+            popupMode |= NotificationPopupMode.Sent;
+        }
+        NotificationHelper.QueueNotification($"Trap: {itemName}", popupMode);
     }
 
 

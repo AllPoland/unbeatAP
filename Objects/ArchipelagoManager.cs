@@ -7,6 +7,7 @@ using UNBEATAP.Helpers;
 using UNBEATAP.Traps;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Arcade.UI.SongSelect;
 
 namespace UNBEATAP.Objects;
 
@@ -25,6 +26,9 @@ public class ArchipelagoManager : MonoBehaviour
 
     public bool Connecting { get; private set; }
     public bool SavingHighScores { get; private set; }
+
+    private const float songListRefreshTime = 0.5f;
+    private float songListDirtyTime;
 
 
     private IEnumerator ConnectCoroutine()
@@ -84,6 +88,18 @@ public class ArchipelagoManager : MonoBehaviour
     }
 
 
+    public void SetSongListDirty()
+    {
+        if(!IsArcadeMenu)
+        {
+            // Song list gets refreshed when going to arcade menu anyway
+            return;
+        }
+
+        songListDirtyTime = songListRefreshTime;
+    }
+
+
     public static void LoadAssetBundles()
     {
         if(APUIBundle)
@@ -128,6 +144,7 @@ public class ArchipelagoManager : MonoBehaviour
             Muted.UnMute();
         }
 
+        songListDirtyTime = 0f;
         OnSceneLoaded?.Invoke(next);
     }
 
@@ -165,6 +182,17 @@ public class ArchipelagoManager : MonoBehaviour
         {
             // Notifications must be shown in main unity thread, otherwise it causes a game crash
             NotificationHelper.ShowNotification();
+
+            // Refresh song list after a bit of time has passed without getting new songs
+            if(songListDirtyTime >= 0f && ArcadeSongDatabase.Instance)
+            {
+                songListDirtyTime -= Time.deltaTime;
+                if(songListDirtyTime <= 0f)
+                {
+                    ArcadeSongDatabase.Instance.LoadDatabase();
+                    ArcadeSongDatabase.Instance.RefreshSongList();
+                }
+            }
         }
     }
 }
