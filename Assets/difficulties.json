@@ -82,7 +82,8 @@
         "easy",
         "normal",
         "hard",
-        "unbeatable"
+        "unbeatable",
+        "star"
     ],
     "stolen": [
         "beginner",
@@ -207,6 +208,20 @@
         "star"
     ],
     "cop trauma": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "alternative policing strategy arcade": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "go figure": [
         "beginner",
         "easy",
         "normal",
