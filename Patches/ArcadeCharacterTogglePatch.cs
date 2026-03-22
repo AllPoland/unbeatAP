@@ -28,6 +28,8 @@ public class ArcadeCharacterTogglePatch
         Toggle _toggle = __instance.GetComponent<Toggle>();
         _toggle.onValueChanged.AddListener((state) => traverse.Method("OnToggleChanged", state).GetValue());
         _toggle.group = toggleGroup;
+
+        // Changed line; replace FileStorage lookup with Client lookup
         bool select = (isPrimary ? Plugin.Client.primaryCharacter : Plugin.Client.secondaryCharacter) == character.name;
         _toggle.SetIsOnWithoutNotify(select);
 

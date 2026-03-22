@@ -50,9 +50,9 @@ public static class CharacterController
         }
 
         Plugin.Logger.LogInfo($"Successfully collected Character: {charName}");
-        ForceEquipUnlockedCharacter();
-        // Don't queue notification if not finished connecting
+        // Don't queue notification or override characters if not finished connecting
         if(!Plugin.Client.Connected) return;
+        ForceEquipUnlockedCharacter();
 
         NotificationPopupMode popupMode = NotificationPopupMode.Received;
         if(sentBySelf)
