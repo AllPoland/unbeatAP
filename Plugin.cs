@@ -19,7 +19,7 @@ namespace UNBEATAP;
 public class Plugin : BaseUnityPlugin
 {
     public const string GameName = "UNBEATABLE Arcade";
-    public const string PluginFolder = "BepInEx/plugins/unbeatAP";
+    public static readonly string PluginFolder = Paths.GameRootPath + "/BepInEx/plugins/unbeatAP";
     public static readonly string AssetsFolder = PluginFolder + "/Assets";
     public static readonly string SaveFolder = PluginFolder + "/Saves";
 
