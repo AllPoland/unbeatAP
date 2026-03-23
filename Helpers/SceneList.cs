@@ -54,6 +54,12 @@ public static class SceneList
 
     public static List<string> GetScenes()
     {
+        // If there are no scenes after connection, unlock every scene
+        // Older apworld versions don't have scenes, and the user shouldn't be punished for that.
+        if(scenes.Count == 0)
+        {
+            scenes = SceneNames.ToList();
+        }
         return scenes;
     }
 
