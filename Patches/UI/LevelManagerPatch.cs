@@ -45,7 +45,7 @@ public class LevelManagerPatch
     
     [HarmonyPatch("LoadArcadeLevel")]
     [HarmonyPrefix]
-    static bool LoadArcadeLevelPostfix(string beatmapName, string beatmapDifficulty, int spawn, bool transition, ref string customScene)
+    static bool LoadArcadeLevelPrefix(string beatmapName, string beatmapDifficulty, int spawn, bool transition, ref string customScene)
     {
         if(!string.IsNullOrEmpty(customScene) || !Plugin.Client.Connected)
         {
