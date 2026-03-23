@@ -25,12 +25,4 @@ public class ArcadeSceneView
         __result = false;
         return false;
     }
-
-    //[HarmonyPatch(typeof(RhythmSceneIndex), "TryGetRhythmScene")]
-    //[HarmonyPostfix]
-    static void TryGetRhythmScenePatch(RhythmSceneIndex.RhythmScene title)
-    {
-        Plugin.Logger.LogInfo(title.name);
-        //Plugin.Logger.LogInfo(title.scene);
-    }
 }
