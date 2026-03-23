@@ -248,9 +248,18 @@ public class UIManager : MonoBehaviour
 
             if(console)
             {
-                // Bring the console back from its hidey hole
-                console.transform.SetParent(arcadeRoot.transform);
-                ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+                if(!Plugin.Client.Connected)
+                {
+                    // The client has disconnected, so the console needs to go forever
+                    Destroy(console);
+                    console = null;
+                }
+                else
+                {
+                    // Bring the console back from its hidey hole
+                    console.transform.SetParent(arcadeRoot.transform);
+                    ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+                }
             }
 
             try
