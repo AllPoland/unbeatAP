@@ -255,6 +255,9 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(ArcadeCharacterTogglePatch));
                 Harmony.CreateAndPatchAll(typeof(RhythmCharacterSelectorPatch));
                 Harmony.CreateAndPatchAll(typeof(CharacterDropdownPatch));
+                
+                // Rando scene handling
+                Harmony.CreateAndPatchAll(typeof(ArcadeSceneView));
 
                 // Rating handling
                 Harmony.CreateAndPatchAll(typeof(PlayerStatsHelperPatch));

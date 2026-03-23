@@ -219,6 +219,10 @@ public class Client
         {
             CharacterController.AddCharacter(name, sentBySelf);
         }
+        else if(name.EndsWith(SceneController.ScenePrefix))
+        {
+            SceneController.AddScene(name, sentBySelf);
+        }
         else if(name.EndsWith(TrapController.TrapSuffix))
         {
             TrapController.ActivateTrap(name, sentBySelf);
@@ -456,6 +460,7 @@ public class Client
         DifficultyController.Clear();
         DifficultyList.Clear();
         CharacterList.Clear();
+        SceneList.Clear();
         HighScoreHandler.HighScores = new HighScoreList();
         HighScoreHandler.ResetSavedRating();
         TrapController.DeactivateTraps();
