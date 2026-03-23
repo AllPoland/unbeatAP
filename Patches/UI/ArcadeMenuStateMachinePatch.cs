@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using Arcade.UI.AnimationSystem;
 using Arcade.UI.MenuStates;
 using HarmonyLib;
 using UNBEATAP.Objects;

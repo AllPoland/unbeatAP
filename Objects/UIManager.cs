@@ -4,6 +4,8 @@ using System.Linq;
 using Arcade.UI;
 using Arcade.UI.AnimationSystem;
 using Arcade.UI.MenuStates;
+using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Archipelago.MultiClient.Net.MessageLog.Parts;
 using HarmonyLib;
 using TMPro;
 using UBUI.Animation;
@@ -20,8 +22,11 @@ public class UIManager : MonoBehaviour
 {
     private const string disconnectText = "<mspace=11>//<mspace=17> </mspace><cspace=0.35em>disconnect.";
     private const string ArchipelagoConnectionScreen = "ArchipelagoConnectionScreen.prefab";
+    private const string ArchipelagoConsole = "ArchipelagoConsole.prefab";
+    private const string Notification = "Notification.prefab";
 
     private APConnectionScreen connectScreen;
+    private APConsole console;
     private Dictionary<(EArcadeMenuStates, EArcadeMenuStates), Dictionary<string, float>> transitionDelays = new Dictionary<(EArcadeMenuStates, EArcadeMenuStates), Dictionary<string, float>>();
 
     private ArchipelagoManager Manager => ArchipelagoManager.Instance;
@@ -41,6 +46,43 @@ public class UIManager : MonoBehaviour
         }
 
         UIStateManager.SetState((UIState)oldState, (UIState)newState, delays);
+    }
+
+
+    private void ShowMessage(LogMessage message)
+    {
+        if(!console)
+        {
+            return;
+        }
+
+        try
+        {
+            string output = "";
+            string lastHex = "";
+            foreach(MessagePart part in message.Parts)
+            {
+                // Read the color and convert it to hex for TMP tags
+                Archipelago.MultiClient.Net.Models.Color color = part.Color;
+                Color unityColor = new Color(color.R, color.G, color.B);
+                string hex = unityColor == Color.white ? "" : ColorUtility.ToHtmlStringRGB(unityColor);
+
+                if(hex != lastHex)
+                {
+                    // We need a new color tag for this part
+                    output += $"<color=#{hex}>";
+                }
+                output += part.Text;
+
+                lastHex = hex;
+            }
+
+            console.QueueMessage(output);
+        }
+        catch(Exception e)
+        {
+            Plugin.Logger.LogError($"{e.Message}\n    {e.StackTrace}");
+        }
     }
 
 
@@ -113,6 +155,21 @@ public class UIManager : MonoBehaviour
     }
 
 
+    private void CreateConsole(Transform root)
+    {
+        GameObject consoleObject = PrefabInitializer.LoadAndInstantiatePrefab(ArchipelagoConsole, ArchipelagoManager.APUIBundle, root);
+        console = consoleObject.GetComponent<APConsole>();
+
+        GameObject notificationObject = PrefabInitializer.LoadAndInstantiatePrefab(Notification, ArchipelagoManager.APUIBundle, consoleObject.transform);
+        console.MessagePrefab = notificationObject.GetComponent<APConsoleMessage>();
+        notificationObject.SetActive(false);
+
+        ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+        console.OnMessageSent += Plugin.Client.Session.Say;
+        console.Init();
+    }
+
+
     private void InitArcadeUIConnected(Transform root)
     {
         Transform screenArea = root.GetChild(1);
@@ -135,6 +192,12 @@ public class UIManager : MonoBehaviour
         CreateConnectScreen(mainMenu);
         connectScreen.SetConnected();
         connectScreen.OnConnect.AddListener(() => Plugin.Client.DisconnectAndClose());
+
+        if(!console)
+        {
+            CreateConsole(root);
+            Plugin.Client.Session.MessageLog.OnMessageReceived += ShowMessage;
+        }
     }
 
 
@@ -183,6 +246,13 @@ public class UIManager : MonoBehaviour
                 return;
             }
 
+            if(console)
+            {
+                // Bring the console back from its hidey hole
+                console.transform.SetParent(arcadeRoot.transform);
+                ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+            }
+
             try
             {
                 Transform rootTransform = arcadeRoot.transform;
@@ -193,6 +263,16 @@ public class UIManager : MonoBehaviour
             {
                 Plugin.Logger.LogError($"Failed to initialize arcade scene with error: {e.Message}\n    {e.StackTrace}");
             }
+        }
+    }
+
+
+    public void HandleSceneLoadStart(bool loadingArcade)
+    {
+        if(!loadingArcade && console)
+        {
+            // Move the console to a safe place
+            console.transform.SetParent(Manager.transform);
         }
     }
 

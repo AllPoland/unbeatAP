@@ -21,6 +21,11 @@ public class LevelManagerPatch
             return true;
         }
 
+        if(ArchipelagoManager.Instance.UIManager)
+        {
+            ArchipelagoManager.Instance.UIManager.HandleSceneLoadStart(sceneIndex == JeffBezosController.arcadeMenuScene);
+        }
+
         if(!ArchipelagoManager.Instance.IsArcadeMenu)
         {
             return true;
