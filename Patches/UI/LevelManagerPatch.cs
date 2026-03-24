@@ -45,11 +45,11 @@ public class LevelManagerPatch
     
     [HarmonyPatch("LoadArcadeLevel")]
     [HarmonyPrefix]
-    static bool LoadArcadeLevelPrefix(string beatmapName, string beatmapDifficulty, int spawn, bool transition, ref string customScene)
+    static void LoadArcadeLevelPrefix(string beatmapName, string beatmapDifficulty, int spawn, bool transition, ref string customScene)
     {
         if(!string.IsNullOrEmpty(customScene) || !Plugin.Client.Connected)
         {
-            return true;
+            return;
         }
 
         // If scene is set to default but the default scene is not unlocked, default to the first unlocked scene in the list.
@@ -57,8 +57,7 @@ public class LevelManagerPatch
         string ext = SceneList.GetExternalName(arcadeProgression.stageScene);
         string finalscene = SceneList.GetInternalName(SceneList.GetScenes().First());
         if(SceneList.GetScenes().Contains(ext) || finalscene == null) // If the scene ends up null, don't crash the game please
-            return true;
+            return;
         customScene = finalscene;
-        return true;
     }
 }
