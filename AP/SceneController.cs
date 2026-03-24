@@ -2,7 +2,7 @@ using UNBEATAP.Helpers;
 
 namespace UNBEATAP.AP;
 
-public class SceneController
+public static class SceneController
 {
     public const string ScenePrefix = "Scene: ";
     public static void AddScene(string itemName, bool sentBySelf)
@@ -15,7 +15,7 @@ public class SceneController
             return;
         }
 
-        Plugin.Logger.LogInfo($"Successfully collected Scene: {ScenePrefix}");
+        Plugin.Logger.LogInfo($"Successfully collected Scene: {sceneName}");
         // Don't queue notification if not finished connecting
         if(!Plugin.Client.Connected) return;
 

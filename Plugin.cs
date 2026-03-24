@@ -227,6 +227,7 @@ public class Plugin : BaseUnityPlugin
 
             Logger.LogInfo("Loading assets.");
             DifficultyList.Init();
+            SceneList.Init();
 
             ArchipelagoManager.LoadAssetBundles();
 

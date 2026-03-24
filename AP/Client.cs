@@ -219,7 +219,7 @@ public class Client
         {
             CharacterController.AddCharacter(name, sentBySelf);
         }
-        else if(name.EndsWith(SceneController.ScenePrefix))
+        else if(name.StartsWith(SceneController.ScenePrefix))
         {
             SceneController.AddScene(name, sentBySelf);
         }

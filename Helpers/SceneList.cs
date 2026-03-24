@@ -69,6 +69,10 @@ public static class SceneList
         scenes.Clear();
     }
 
+    public static void Init()
+    {
+        // This is empty, but if I don't run something in this class at startup the game crashes
+    }
 
     public static string GetExternalName(string name)
     {
