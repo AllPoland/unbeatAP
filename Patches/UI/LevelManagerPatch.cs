@@ -52,12 +52,12 @@ public class LevelManagerPatch
             return;
         }
 
-        // If scene is set to default but the default scene is not unlocked, default to the first unlocked scene in the list.
+        // If stage is set to default but the default stage is not unlocked, default to the first unlocked stage in the list.
         ArcadeProgression arcadeProgression = new ArcadeProgression($"{beatmapName}/{beatmapDifficulty}", RhythmGameType.ArcadeMode);
-        string ext = SceneList.GetExternalName(arcadeProgression.stageScene);
-        string finalscene = SceneList.GetInternalName(SceneList.GetScenes().First());
-        if(SceneList.GetScenes().Contains(ext) || finalscene == null) // If the scene ends up null, don't crash the game please
+        string ext = StageList.GetExternalName(arcadeProgression.stageScene);
+        string finalstage = StageList.GetInternalName(StageList.GetStages().First());
+        if(StageList.GetStages().Contains(ext) || finalstage == null) // If the stage ends up null, don't crash the game please
             return;
-        customScene = finalscene;
+        customScene = finalstage;
     }
 }

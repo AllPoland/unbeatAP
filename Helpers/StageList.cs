@@ -4,9 +4,9 @@ using Arcade.Unlockables;
 
 namespace UNBEATAP.Helpers;
 
-public static class SceneList
+public static class StageList
 {
-    public static readonly string[] SceneNames =
+    public static readonly string[] StageNames =
     [
         "train_station.",
         "stadium_(past).",
@@ -30,43 +30,43 @@ public static class SceneList
         "greenscreen."
     ];
 
-    private static List<string> scenes = new List<string>();
-    private static List<RhythmSceneIndex.RhythmScene> allscenes = RhythmSceneIndex.defaultIndex.GetAllRhythmScenes();
+    private static List<string> stages = new List<string>();
+    private static List<RhythmSceneIndex.RhythmScene> allstages = RhythmSceneIndex.defaultIndex.GetAllRhythmScenes();
 
-    public static bool TryAddScene(string scene)
+    public static bool TryAddStage(string stage)
     {
-        if(scenes.Contains(scene))
+        if(stages.Contains(stage))
         {
-            Plugin.Logger.LogWarning($"Scene '{scene}' has already been added!");
+            Plugin.Logger.LogWarning($"Scene '{stage}' has already been added!");
             return false;
         }
 
-        if(!SceneNames.Contains(scene.ToLower()))
+        if(!StageNames.Contains(stage.ToLower()))
         {
-            Plugin.Logger.LogWarning($"Scene '{scene}' does not exist!");
+            Plugin.Logger.LogWarning($"Scene '{stage}' does not exist!");
             return false;
         }
 
-        scenes.Add(scene);
+        stages.Add(stage);
         return true;
     }
 
 
-    public static List<string> GetScenes()
+    public static List<string> GetStages()
     {
-        // If there are no scenes after connection, unlock every scene
-        // Older apworld versions don't have scenes, and the user shouldn't be punished for that.
-        if(scenes.Count == 0)
+        // If there are no stages after connection, unlock every stage
+        // Older apworld versions don't have stages, and the user shouldn't be punished for that.
+        if(stages.Count == 0)
         {
-            scenes = SceneNames.ToList();
+            stages = StageNames.ToList();
         }
-        return scenes;
+        return stages;
     }
 
 
     public static void Clear()
     {
-        scenes.Clear();
+        stages.Clear();
     }
 
     public static void Init()
@@ -76,11 +76,11 @@ public static class SceneList
 
     public static string GetExternalName(string name)
     {
-        foreach(RhythmSceneIndex.RhythmScene scene in allscenes)
+        foreach(RhythmSceneIndex.RhythmScene stage in allstages)
         {
-            if(scene.scene.EndsWith(name))
+            if(stage.scene.EndsWith(name))
             {
-                return scene.name;
+                return stage.name;
             }
         }
         return null;
@@ -89,10 +89,10 @@ public static class SceneList
 
     public static string GetInternalName(string name)
     {
-        foreach(RhythmSceneIndex.RhythmScene scene in allscenes)
+        foreach(RhythmSceneIndex.RhythmScene stage in allstages)
         {
-            string intname = scene.scene.Split("/").Last();
-            if(name == scene.name)
+            string intname = stage.scene.Split("/").Last();
+            if(name == stage.name)
             {
                 return intname;
             }

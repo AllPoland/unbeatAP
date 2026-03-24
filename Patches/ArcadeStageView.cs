@@ -5,7 +5,7 @@ using UNBEATAP.Helpers;
 
 namespace UNBEATAP.Patches;
 
-public class ArcadeSceneView
+public class ArcadeStageView
 {
     [HarmonyPatch(typeof(RhythmSceneUnlocksManager), "GetRhythmSceneState")]
     [HarmonyPrefix]
@@ -16,7 +16,7 @@ public class ArcadeSceneView
             return true;
         }
 
-        if(SceneList.GetScenes().Contains(rhythmScene.name))
+        if(StageList.GetStages().Contains(rhythmScene.name))
         {
             __result = true;
             return true;
