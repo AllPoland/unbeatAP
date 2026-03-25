@@ -62,6 +62,12 @@ public class Plugin : BaseUnityPlugin
 
     private static ConfigEntry<int> backupCount;
 
+    private static ConfigEntry<int> consoleMessageMemory;
+    private static ConfigEntry<int> consoleCommandMemory;
+
+    public static int ConsoleMessageMemory => consoleMessageMemory.Value;
+    public static int ConsoleCommandMemory => consoleCommandMemory.Value;
+
 
     public static void SetupNewClient()
     {
@@ -159,6 +165,18 @@ public class Plugin : BaseUnityPlugin
             "Changes when popups will appear for collected/received items.\n0: No popups\n1: Only show for items you send (to yourself or others)\n2: Only show for items sent to you (by yourself or others)\n3: Show for all items you send and receive"
         );
 
+        consoleMessageMemory = Config.Bind(
+            "Other",
+            "Console Message Memory",
+            500,
+            "The maximum number of console messages to retain.\nAfter reaching this limit, old messages will be deleted from memory."
+        );
+        consoleCommandMemory = Config.Bind(
+            "Other",
+            "Console Command Memory",
+            30,
+            "The maximum number of previous command inputs to retain (accessible by pressing the up arrow in the console).\nAfter reaching this limit, old commands will be deleted from memory."
+        );
         backupCount = Config.Bind(
             "Other",
             "Save Backup Count",

@@ -166,7 +166,11 @@ public class UIManager : MonoBehaviour
         notificationObject.SetActive(false);
 
         ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+        
         console.OnMessageSent += Plugin.Client.Session.Say;
+        console.maxMessageMemory = Plugin.ConsoleMessageMemory;
+        console.maxCommandMemory = Plugin.ConsoleCommandMemory;
+
         console.Init();
     }
 
