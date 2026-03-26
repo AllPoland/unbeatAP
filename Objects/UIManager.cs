@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Arcade.UI;
@@ -165,7 +166,11 @@ public class UIManager : MonoBehaviour
         notificationObject.SetActive(false);
 
         ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+        
         console.OnMessageSent += Plugin.Client.Session.Say;
+        console.maxMessageMemory = Plugin.ConsoleMessageMemory;
+        console.maxCommandMemory = Plugin.ConsoleCommandMemory;
+
         console.Init();
     }
 
@@ -234,6 +239,13 @@ public class UIManager : MonoBehaviour
     }
 
 
+    private IEnumerator EnableConsoleCoroutine()
+    {
+        yield return new WaitForSeconds(0.1f);
+        console.Paused = false;
+    }
+
+
     private void HandleSceneLoaded(Scene newScene)
     {
         if(Manager.IsArcadeMenu)
@@ -259,6 +271,7 @@ public class UIManager : MonoBehaviour
                     // Bring the console back from its hidey hole
                     console.transform.SetParent(arcadeRoot.transform);
                     ((RectTransform)console.transform).anchoredPosition = Vector2.zero;
+                    StartCoroutine(EnableConsoleCoroutine());
                 }
             }
 
@@ -282,6 +295,7 @@ public class UIManager : MonoBehaviour
         {
             // Move the console to a safe place
             console.transform.SetParent(Manager.transform);
+            console.Paused = true;
         }
     }
 
