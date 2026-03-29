@@ -19,7 +19,7 @@ public class ArcadeStageView
         if(StageList.GetStages().Contains(rhythmScene.name))
         {
             __result = true;
-            return true;
+            return false;
         }
 
         __result = false;
