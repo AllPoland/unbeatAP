@@ -31,6 +31,8 @@ public class Client
     public string primaryCharacter { get; private set; }
     public string secondaryCharacter { get; private set; }
 
+    public string stage { get; private set; }
+
     public bool MissingDlc { get; private set; }
 
     public static event Action<FailConnectionReason> OnFailConnect;
@@ -152,6 +154,14 @@ public class Client
     {
         secondaryCharacter = secondary;
         Session.DataStorage[Scope.Slot, "secondaryCharacter"] = secondary;
+    }
+
+
+    public void SetStage(string stage)
+    {
+        Plugin.Logger.LogInfo($"Set stage: {stage}");
+        this.stage = stage;
+        Session.DataStorage[Scope.Slot, "selectedStage"] = stage;
     }
 
 
@@ -410,6 +420,8 @@ public class Client
             string primarySelected = await Session.DataStorage[Scope.Slot, "primaryCharacter"].GetAsync<string>();
             string secondarySelected = await Session.DataStorage[Scope.Slot, "secondaryCharacter"].GetAsync<string>();
 
+            string selectedStage = await Session.DataStorage[Scope.Slot, "selectedStage"].GetAsync<string>();
+
             await ScoutLocationItems();
 
             // Make sure all items are gathered at this point, so we know what characters we have
@@ -418,6 +430,9 @@ public class Client
             SetPrimaryCharacter(string.IsNullOrEmpty(primarySelected) ? "Beat" : primarySelected);
             SetSecondaryCharacter(string.IsNullOrEmpty(secondarySelected) ? "Quaver" : secondarySelected);
             CharacterController.ForceEquipUnlockedCharacter();
+
+            SetStage(string.IsNullOrEmpty(selectedStage) ? "Default" : selectedStage);
+            StageController.ForceEquipUnlockedStage();
 
             // All connection steps are done, now send the game to archipelago mode
             Connected = true;

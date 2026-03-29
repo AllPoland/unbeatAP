@@ -31,7 +31,7 @@ public static class StageList
     ];
 
     private static List<string> stages = new List<string>();
-    private static List<RhythmSceneIndex.RhythmScene> allstages = RhythmSceneIndex.defaultIndex.GetAllRhythmScenes();
+    private static List<RhythmSceneIndex.RhythmScene> allStages = RhythmSceneIndex.defaultIndex.GetAllRhythmScenes();
 
     public static bool TryAddStage(string stage)
     {
@@ -58,7 +58,7 @@ public static class StageList
         // Older apworld versions don't have stages, and the user shouldn't be punished for that.
         if(stages.Count == 0)
         {
-            stages = StageNames.ToList();
+            return StageNames.ToList();
         }
         return stages;
     }
@@ -76,7 +76,7 @@ public static class StageList
 
     public static string GetExternalName(string name)
     {
-        foreach(RhythmSceneIndex.RhythmScene stage in allstages)
+        foreach(RhythmSceneIndex.RhythmScene stage in allStages)
         {
             if(stage.scene.EndsWith(name))
             {
@@ -89,7 +89,7 @@ public static class StageList
 
     public static string GetInternalName(string name)
     {
-        foreach(RhythmSceneIndex.RhythmScene stage in allstages)
+        foreach(RhythmSceneIndex.RhythmScene stage in allStages)
         {
             string intname = stage.scene.Split("/").Last();
             if(name == stage.name)

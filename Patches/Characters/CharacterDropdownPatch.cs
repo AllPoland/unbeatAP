@@ -1,7 +1,8 @@
 using Arcade.UI.YourProfile;
 using HarmonyLib;
 using TMPro;
-using UNBEATAP;
+
+namespace UNBEATAP.Patches;
 
 [HarmonyPatch(typeof(CharacterDropdown))]
 public class CharacterDropdownPatch

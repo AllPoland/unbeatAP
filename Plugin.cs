@@ -1,16 +1,16 @@
 ﻿using System;
 using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using UBUI.Archipelago;
 using UNBEATAP.Patches;
 using UNBEATAP.AP;
-using BepInEx.Configuration;
 using UNBEATAP.Helpers;
 using UNBEATAP.Traps;
-using UnityEngine;
 using UNBEATAP.Objects;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using UBUI.Archipelago;
 
 namespace UNBEATAP;
 
@@ -277,6 +277,8 @@ public class Plugin : BaseUnityPlugin
                 
                 // Rando stage handling
                 Harmony.CreateAndPatchAll(typeof(ArcadeStageView));
+                Harmony.CreateAndPatchAll(typeof(SceneSelectDropdownPatch));
+                Harmony.CreateAndPatchAll(typeof(StageApplyPatch));
 
                 // Rating handling
                 Harmony.CreateAndPatchAll(typeof(PlayerStatsHelperPatch));
@@ -304,7 +306,7 @@ public class Plugin : BaseUnityPlugin
             }
             catch(Exception e)
             {
-                Logger.LogFatal($"Patching failed with error: {e.Message}, {e.StackTrace}");
+                Logger.LogFatal($"Patching failed with error: {e.Message}\n    {e.StackTrace}");
                 return;
             }
 
