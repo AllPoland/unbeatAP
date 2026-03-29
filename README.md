@@ -31,7 +31,7 @@ To get the best experience with this randomizer, it is recommended that you set 
 
 # Setup
 ## Prerequisites
-- Install the latest version of the [Archipelago Launcher](https://github.com/ArchipelagoMW/Archipelago/releases). You will need this for setting options, generating the world, and using the text client.
+- Install the latest version of the [Archipelago Launcher](https://github.com/ArchipelagoMW/Archipelago/releases). You will need this for setting options and generating the world.
 - Download [BepInEx Version 5.4 or later](https://github.com/BepInEx/BepInEx/releases) and keep the file handy. You will need this to install the mod.
   - **IMPORTANT:** Make sure you download the 64-bit Windows version of BepInEx, even if you aren't using Windows! It should look like `BepInEx_win_x64_x.x.xx.x.zip`.
 
@@ -69,8 +69,6 @@ To get the best experience with this randomizer, it is recommended that you set 
   - The IP and port are both listed in the game's room page. The IP is everything before the `:`, and the port is the 5-digit number after the `:`. For example, `archipelago.gg:12345` means the IP is `archipelago.gg` and the port is `12345`.
   - Set "slot" to your player name, which you set in your YAML options.
   - If the room has a password, you can also enter it in this UI. If the server has no password, leave the field empty.
- 
-- To get hints and send Archipelago commands, you need to use the text client included with the Archipelago Launcher for now. An in-game console will be added at a future point.
 
 # Other Info
 ## Developers
