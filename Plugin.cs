@@ -245,6 +245,7 @@ public class Plugin : BaseUnityPlugin
 
             Logger.LogInfo("Loading assets.");
             DifficultyList.Init();
+            StageList.Init();
 
             ArchipelagoManager.LoadAssetBundles();
 
@@ -273,6 +274,9 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(ArcadeCharacterTogglePatch));
                 Harmony.CreateAndPatchAll(typeof(RhythmCharacterSelectorPatch));
                 Harmony.CreateAndPatchAll(typeof(CharacterDropdownPatch));
+                
+                // Rando stage handling
+                Harmony.CreateAndPatchAll(typeof(ArcadeStageView));
 
                 // Rating handling
                 Harmony.CreateAndPatchAll(typeof(PlayerStatsHelperPatch));
