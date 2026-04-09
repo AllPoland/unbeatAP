@@ -10,9 +10,9 @@ public class SlotData
     public bool UseBreakout;
     public int MaxDifficulty;
     public int MinDifficulty;
+	public float AccCap;
 
     public float SkillRating;
-    public bool AllowPfc;
     public float AccCurveBias;
     public float AccCurveLowBias;
     public float AccCurveCutoff;
@@ -86,9 +86,9 @@ public class SlotData
         TryGetValue(data, "use_breakout", false, out UseBreakout);
         TryGetValue(data, "max_difficulty", 5, out MaxDifficulty);
         TryGetValue(data, "min_difficulty", 0, out MinDifficulty);
+		TryGetValue(data, "accuracy_cap", 100, out AccCap);
 
         TryGetValue(data, "skill_rating", 500, out SkillRating);
-        TryGetValue(data, "allow_pfc", true, out AllowPfc);
         TryGetValue(data, "acc_curve_bias", 600, out AccCurveBias);
         TryGetValue(data, "acc_curve_low_bias", 200, out AccCurveLowBias);
         TryGetValue(data, "acc_curve_cutoff", 85, out AccCurveCutoff);

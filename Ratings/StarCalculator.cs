@@ -121,7 +121,7 @@ public static class StarCalculator
     }
 
 
-    public static float GetExpectedAccCurve(float skillRating, int level, float curveCutoff, float bias, float lowBias, bool allowPfc)
+    public static float GetExpectedAccCurve(float skillRating, int level, float curveCutoff, float bias, float lowBias, float accCap)
     {
         float rawAcc = GetExpectedAcc(skillRating, level) / 100;
 
@@ -131,7 +131,7 @@ public static class StarCalculator
             return curveCutoff * Mathf.Exp(lowExponent) * 100;
         }
 
-        float maxAcc = allowPfc ? 1f : 0.98f;
+        float maxAcc = accCap / 100;
         float accEpsilon = 1f - maxAcc;
 
         float curveRange = 1f - curveCutoff - accEpsilon;
