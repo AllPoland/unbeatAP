@@ -56,6 +56,8 @@ public class LevelManagerPatch
         ArcadeProgression arcadeProgression = new ArcadeProgression($"{beatmapName}/{beatmapDifficulty}", RhythmGameType.ArcadeMode);
         string ext = StageList.GetExternalName(arcadeProgression.stageScene);
         string finalstage = StageList.GetInternalName(StageList.GetStages().First());
+        if(!StageList.StageNames.Contains(ext)) // If it's a non-selectable stage(like noisz), load it anyway
+            return;
         if(StageList.GetStages().Contains(ext) || finalstage == null) // If the stage ends up null, don't crash the game please
             return;
         customScene = finalstage;
