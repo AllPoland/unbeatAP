@@ -1,5 +1,5 @@
 # Current Status
-This mod is in early alpha, and not guaranteed to be stable! You can download the latest release [here](https://github.com/AllPoland/unbeatAP/releases/latest).
+This mod is in alpha, and not guaranteed to be stable! You can download the latest release [here](https://github.com/AllPoland/unbeatAP/releases/latest).
 
 To keep up to date, join the "UNBEATABLE (PC)" thread in `#future-game-design` in the [Archipelago discord server](https://discord.gg/8Z65BR2).
 
