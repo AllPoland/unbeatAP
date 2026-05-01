@@ -226,7 +226,8 @@
         "easy",
         "normal",
         "hard",
-        "unbeatable"
+        "unbeatable",
+        "star"
     ],
     "ch4_dream1": [
         "beginner",
@@ -495,6 +496,13 @@
         "unbeatable"
     ],
     "do no harm": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "it's time to do crimes": [
         "beginner",
         "easy",
         "normal",
