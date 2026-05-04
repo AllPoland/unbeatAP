@@ -16,9 +16,13 @@ public class SongButtonPatch
             return;
         }
 
+        Traverse traverse = new Traverse(__instance);
+        TextMeshProUGUI songClearRank = traverse.Field("songClearRank").GetValue<TextMeshProUGUI>();
+
         ArcadeSongDatabase.BeatmapItem songAtIndex = ArcadeSongDatabase.Instance.GetSongAtIndex(songIndex);
         if(songAtIndex == null)
         {
+            songClearRank.gameObject.SetActive(false);
             return;
         }
 
@@ -28,12 +32,10 @@ public class SongButtonPatch
         int level = songAtIndex.Beatmap.metadata.tagData.Level;
         float expectedAcc = HighScoreHandler.GetExpectedAcc(level);
 
-        Traverse traverse = new Traverse(__instance);
-        TextMeshProUGUI songClearRank = traverse.Field("songClearRank").GetValue<TextMeshProUGUI>();
+        songClearRank.gameObject.SetActive(true);
         if(!scoreItem.cleared)
         {
             // Normally, songClearRank is disabled in this case, but we still wanna show target acc
-            songClearRank.gameObject.SetActive(true);
             songClearRank.text = $"<size=70%>(00.00% / {expectedAcc:00.00}%)</size>";
             return;
         }
