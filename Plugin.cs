@@ -301,6 +301,7 @@ public class Plugin : BaseUnityPlugin
                 Harmony.CreateAndPatchAll(typeof(LevelManagerPatch));
                 Harmony.CreateAndPatchAll(typeof(UIColorPaletteUpdaterPatch));
                 Harmony.CreateAndPatchAll(typeof(ArcadeMenuStateMachinePatch));
+                Harmony.CreateAndPatchAll(typeof(ArcadeSongListViewPatch));
                 Harmony.CreateAndPatchAll(typeof(UIFocusOnButtonPatch));
                 Harmony.CreateAndPatchAll(typeof(RewardsNotificationPatch));
             }

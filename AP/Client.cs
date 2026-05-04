@@ -172,6 +172,7 @@ public class Client
         {
             Plugin.Logger.LogInfo("Target rating achieved! Setting goal.");
             Session.SetGoalAchieved();
+            newRating = 100f;
         }
 
         float ratingStep = 100f / SlotData.ItemCount;

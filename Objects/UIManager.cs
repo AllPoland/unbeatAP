@@ -26,8 +26,8 @@ public class UIManager : MonoBehaviour
     private const string ArchipelagoConsole = "ArchipelagoConsole.prefab";
     private const string Notification = "Notification.prefab";
 
-    private APConnectionScreen connectScreen;
-    private APConsole console;
+    public APConnectionScreen connectScreen;
+    public APConsole console;
     private Dictionary<(EArcadeMenuStates, EArcadeMenuStates), Dictionary<string, float>> transitionDelays = new Dictionary<(EArcadeMenuStates, EArcadeMenuStates), Dictionary<string, float>>();
 
     private ArchipelagoManager Manager => ArchipelagoManager.Instance;

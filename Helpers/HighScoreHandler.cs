@@ -162,7 +162,7 @@ public static class HighScoreHandler
             slotData.AccCurveCutoff,
             slotData.AccCurveBias,
             slotData.AccCurveLowBias,
-            slotData.AllowPfc
+            slotData.AccCap
         );
 
         if(expectedAcc < ExpectedFailThreshold)
