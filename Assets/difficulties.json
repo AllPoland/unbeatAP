@@ -229,6 +229,13 @@
         "unbeatable",
         "star"
     ],
+    "apb": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
     "ch4_dream1": [
         "beginner",
         "easy",
@@ -587,6 +594,14 @@
         "unbeatable"
     ],
     "om and on": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
+    ],
+    "small cloud sugar candy": [
         "beginner",
         "easy",
         "normal",
