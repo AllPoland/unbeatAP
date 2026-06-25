@@ -16,7 +16,17 @@ public static class CharacterList
         "quaver (acoustic)",
         "quaver (cqc)",
         "treble",
-        "rest"
+        "rest",
+        "rest (omf)",
+        "eve",
+        "grace",
+        "crest",
+        "crest (maid)",
+        "dc",
+        "poco",
+        "apoco",
+        "penny",
+        "sforzando"
     ];
 
     private static List<string> characters = new List<string>();
