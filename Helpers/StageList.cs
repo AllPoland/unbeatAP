@@ -27,7 +27,8 @@ public static class StageList
         "zm_test_chamber.",
         "graveyard.",
         "nsr.",
-        "greenscreen."
+        "greenscreen.",
+        "playback."
     ];
 
     private static List<string> stages = new List<string>();
