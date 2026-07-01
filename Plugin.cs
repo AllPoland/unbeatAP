@@ -291,6 +291,7 @@ public class Plugin : BaseUnityPlugin
                 // Rando song handling
                 Harmony.CreateAndPatchAll(typeof(ArcadeDifficultyView));
                 Harmony.CreateAndPatchAll(typeof(BeatmapIndexPatch));
+                Harmony.CreateAndPatchAll(typeof(ArcadeSongDatabasePatch));
 
                 // Rando character handling
                 Harmony.CreateAndPatchAll(typeof(ArcadeCharacterView));

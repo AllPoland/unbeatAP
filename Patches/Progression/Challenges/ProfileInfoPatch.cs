@@ -59,7 +59,7 @@ public class ProfileInfoPatch
     
     [HarmonyPatch("SavePlayerStats")]
     [HarmonyPrefix]
-    static bool SaveArcadeProgressionPrefix()
+    static bool SavePlayerStatsPrefix()
     {
         // probably save in DataStorage for chabo purposes in the future
         if(!Plugin.Client.Connected)
