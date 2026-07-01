@@ -2,6 +2,7 @@
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using CrossPlatform;
 using HarmonyLib;
 using UBUI.Archipelago;
 using UNBEATAP.Patches;
@@ -64,6 +65,9 @@ public class Plugin : BaseUnityPlugin
 
     private static ConfigEntry<int> consoleMessageMemory;
     private static ConfigEntry<int> consoleCommandMemory;
+    
+    //remove next version
+    private static ConfigEntry<bool> remove10StarAchievement;
 
     public static int ConsoleMessageMemory => consoleMessageMemory.Value;
     public static int ConsoleCommandMemory => consoleCommandMemory.Value;
@@ -207,6 +211,13 @@ public class Plugin : BaseUnityPlugin
             "",
             "The password to use when connecting. If the server has no password, leave this empty.\n(This is set automatically by the in-game UI)"
         );
+        // remove next version
+        remove10StarAchievement = Config.Bind(
+            "Other",
+            "Remove 10* Achievement",
+            false,
+            "In UNBEATABLE V2.0.x, if you're running mod version v.0.5.0 or lower, you may get the 10* achievement despite not having that rating.\nIf you've been affected by this, "
+        );
     }
 
 
@@ -222,7 +233,18 @@ public class Plugin : BaseUnityPlugin
             Logger.LogInfo($"Creating manager.");
             new GameObject("Archipelago Manager", typeof(ArchipelagoManager));
         }
-
+        
+        // remove this next version
+        if(next.name == "BootUp")
+        {
+            if(remove10StarAchievement.Value)
+            {
+                PlatformManager.Platform?.ResetAchievement("rating_10");
+                remove10StarAchievement.Value = false;
+                
+            } 
+        }
+        
         ArchipelagoManager.Instance.UpdateScene(current, next);
     }
 
@@ -254,6 +276,7 @@ public class Plugin : BaseUnityPlugin
             {
                 // Override general progression
                 Harmony.CreateAndPatchAll(typeof(BlockAuthentication));
+                Harmony.CreateAndPatchAll(typeof(PlatformSteamPatch));
                 Harmony.CreateAndPatchAll(typeof(MainProgressionContainerPatch));
                 Harmony.CreateAndPatchAll(typeof(UnlockAll));
                 Harmony.CreateAndPatchAll(typeof(ArcadeMenuPaletteView));

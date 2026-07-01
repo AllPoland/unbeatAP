@@ -56,4 +56,17 @@ public class ProfileInfoPatch
         ArchipelagoManager.Instance.SaveHighScores();
         return false;
     }
+    
+    [HarmonyPatch("SavePlayerStats")]
+    [HarmonyPrefix]
+    static bool SaveArcadeProgressionPrefix()
+    {
+        // probably save in DataStorage for chabo purposes in the future
+        if(!Plugin.Client.Connected)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
