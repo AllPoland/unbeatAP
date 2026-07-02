@@ -216,7 +216,7 @@ public class Plugin : BaseUnityPlugin
             "Other",
             "Remove 10* Achievement",
             false,
-            "In UNBEATABLE V2.0.x, if you're running mod version v.0.5.0 or lower, you may get the 10* achievement despite not having that rating.\nIf you've been affected by this, "
+            "In UNBEATABLE V2.0.x, if you're running mod version v.0.5.0 or lower, you may get the 10* achievement despite not having that rating.\nIf this has happened to you, follow the instructions at https://github.com/AllPoland/unbeatAP/blob/main/Documentation/Troubleshooting/StarRatingChallengeBug.md"
         );
     }
 
