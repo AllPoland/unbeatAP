@@ -179,17 +179,20 @@ public class Client
         int checkedRatingCount = Mathf.FloorToInt(newRating / ratingStep);
 
         List<long> checkedLocations = new List<long>();
+        List<long> allLocationsChecked = Session.Locations.AllLocationsChecked.ToList();
         while(LastCheckedLocation < checkedRatingCount)
         {
             LastCheckedLocation += 1;
             string locationName = $"{ratingLocPrefix}{LastCheckedLocation}";
-            checkedLocations.Add(Session.Locations.GetLocationIdFromName(Plugin.GameName, locationName));
+            long locationID = Session.Locations.GetLocationIdFromName(Plugin.GameName, locationName);
+            if(!allLocationsChecked.Contains(locationID))
+            {
+                checkedLocations.Add(locationID);
+            }
         }
 
         if(checkedLocations.Count > 0)
         {
-            // Don't send check if it's already checked! On first connect it sometimes sends the last check, even though it's already checked.
-            if(Session.Locations.AllLocationsChecked.Contains(checkedLocations.Last())) return;
             Plugin.Logger.LogInfo($"Completing check for {ratingLocPrefix}{LastCheckedLocation}");
             Session.Locations.CompleteLocationChecks(checkedLocations.ToArray());
             HandleItemSend(checkedLocations);
