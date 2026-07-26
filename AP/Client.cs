@@ -33,7 +33,8 @@ public class Client
 
     public string stage { get; private set; }
 
-    public bool MissingDlc { get; private set; }
+    public bool MissingBreakout { get; private set; }
+    public bool MissingContentCompanion { get; private set; }
 
     public static event Action<FailConnectionReason> OnFailConnect;
     public event Action<ItemInfo> OnItemReceived;
@@ -61,7 +62,8 @@ public class Client
         deathLinkBehavior = DeathLinkReason.Fail;
 
         Connected = false;
-        MissingDlc = false;
+        MissingBreakout = false;
+        MissingContentCompanion = false;
     }
 
 
@@ -108,7 +110,8 @@ public class Client
         }
 
         Connected = false;
-        MissingDlc = false;
+        MissingBreakout = false;
+        MissingContentCompanion = false;
 
         Plugin.Logger.LogInfo($"Creating session with server {ip}:{port}");
 
@@ -388,22 +391,35 @@ public class Client
             // Backup save files in case our wacky stuff leads to breaking a save
             Plugin.DoBackup();
 
-            if(SlotData.UseBreakout)
+            if(SlotData.UseBreakout || SlotData.UseContentCompanion)
             {
                 try
                 {
                     DlcList dlcs = Resources.Load<DlcList>("DlcList");
-                    if(!dlcs.availableDlcs.Contains("DeluxeEdition"))
+                    if(SlotData.UseBreakout && !dlcs.availableDlcs.Contains("DeluxeEdition"))
                     {
                         Plugin.Logger.LogError("The Breakout Edition DLC was enabled in the world configuration, but is not installed!\n    The randomizer may not be possible without the DLC!");
-                        MissingDlc = true;
+                        MissingBreakout = true;
                     }
+                    else if(!SlotData.UseBreakout) MissingBreakout = true;
+
+                    if(SlotData.UseContentCompanion && !dlcs.availableDlcs.Contains("ContentCompanion")) // temporary dlc name until dlc releases
+                    {
+                        Plugin.Logger.LogError("The Jamie Paige Content Companion DLC was enabled in the world configuration, but is not installed!\n    The randomizer may not be possible without the DLC!");
+                        MissingContentCompanion = true;
+                    }
+                    else if(!SlotData.UseContentCompanion) MissingContentCompanion = true;
                 }
                 catch {}
 
-                if(!MissingDlc)
+                if(!MissingBreakout)
                 {
                     Plugin.Logger.LogInfo($"Breakout Edition DLC is enabled for this randomizer.");
+                }
+
+                if(!MissingContentCompanion)
+                {
+                    Plugin.Logger.LogInfo($"The Jamie Paige Content Companion DLC is enabled for this randomizer.");
                 }
             }
 
