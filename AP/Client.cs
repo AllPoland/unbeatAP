@@ -395,15 +395,16 @@ public class Client
             {
                 try
                 {
-                    DlcList dlcs = Resources.Load<DlcList>("DlcList");
-                    if(SlotData.UseBreakout && !dlcs.availableDlcs.Contains("DeluxeEdition"))
+                    DlcManager dlcs = DlcManager.Instance;
+                    Dictionary<string, DlcDescriptor> loaded = dlcs.LoadedDlcs;
+                    if(SlotData.UseBreakout && !loaded.Keys.Contains("DeluxeEdition"))
                     {
                         Plugin.Logger.LogError("The Breakout Edition DLC was enabled in the world configuration, but is not installed!\n    The randomizer may not be possible without the DLC!");
                         MissingBreakout = true;
                     }
                     else if(!SlotData.UseBreakout) MissingBreakout = true;
 
-                    if(SlotData.UseContentCompanion && !dlcs.availableDlcs.Contains("ContentCompanion")) // temporary dlc name until dlc releases
+                    if(SlotData.UseContentCompanion && !loaded.Keys.Contains("Chicago"))
                     {
                         Plugin.Logger.LogError("The Jamie Paige Content Companion DLC was enabled in the world configuration, but is not installed!\n    The randomizer may not be possible without the DLC!");
                         MissingContentCompanion = true;
