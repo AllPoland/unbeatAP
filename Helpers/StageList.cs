@@ -28,11 +28,12 @@ public static class StageList
         "graveyard.",
         "nsr.",
         "greenscreen.",
-        "playback."
+        "playback.",
+        "orchard.",
+        "squared_circle."
     ];
 
     private static List<string> stages = new List<string>();
-    private static List<RhythmSceneIndex.RhythmScene> allStages = RhythmSceneIndex.defaultIndex.GetAllRhythmScenes();
 
     public static bool TryAddStage(string stage)
     {
@@ -77,7 +78,7 @@ public static class StageList
 
     public static string GetExternalName(string name)
     {
-        foreach(RhythmSceneIndex.RhythmScene stage in allStages)
+        foreach(RhythmSceneIndex.RhythmScene stage in RhythmSceneIndex.defaultIndex.GetAllRhythmScenes())
         {
             if(stage.scene.EndsWith(name))
             {
@@ -90,13 +91,11 @@ public static class StageList
 
     public static string GetInternalName(string name)
     {
-        foreach(RhythmSceneIndex.RhythmScene stage in allStages)
+        RhythmSceneIndex.defaultIndex.TryGetRhythmScene(name, out RhythmSceneIndex.RhythmScene title);
+        if(name == title.name)
         {
-            string intname = stage.scene.Split("/").Last();
-            if(name == stage.name)
-            {
-                return intname;
-            }
+            string intname = title.scene.Split("/").Last();
+            return intname;
         }
         return null;
     }

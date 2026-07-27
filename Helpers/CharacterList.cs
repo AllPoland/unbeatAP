@@ -26,7 +26,9 @@ public static class CharacterList
         "poco",
         "apoco",
         "penny",
-        "sforzando"
+        "sforzando",
+        "jamiep",
+        "quaver (shrimp)"
     ];
 
     private static List<string> characters = new List<string>();
