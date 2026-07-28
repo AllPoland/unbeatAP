@@ -244,6 +244,13 @@
         "unbeatable",
         "star"
     ],
+    "not losing": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
     "ch4_dream1": [
         "beginner",
         "easy",
@@ -697,5 +704,114 @@
         "hard",
         "unbeatable",
         "star"
+    ],
+    "no eulogies": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "turn back": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
+    ],
+    "my universal": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "dream diary": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "i wish i could fall": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
+    ],
+    "sleeping in jp remix": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
+    ],
+    "rot for clout": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "birdbrain": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "ebichahan": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "machine love": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "newly human feeling": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "women wrestling emoji": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "nothing ever": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
+    ],
+    "little secret": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "square up synthetic": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
     ]
 }
