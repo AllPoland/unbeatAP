@@ -8,6 +8,7 @@ namespace UNBEATAP.AP;
 public class SlotData
 {
     public bool UseBreakout;
+    public bool UseContentCompanion;
     public int MaxDifficulty;
     public int MinDifficulty;
 	public float AccCap;
@@ -84,6 +85,7 @@ public class SlotData
     public SlotData(Dictionary<string, object> data)
     {
         TryGetValue(data, "use_breakout", false, out UseBreakout);
+        TryGetValue(data, "use_content_companion", false, out UseContentCompanion);
         TryGetValue(data, "max_difficulty", 5, out MaxDifficulty);
         TryGetValue(data, "min_difficulty", 0, out MinDifficulty);
 		TryGetValue(data, "accuracy_cap", 100, out AccCap);
