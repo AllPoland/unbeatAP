@@ -97,7 +97,8 @@
         "easy",
         "normal",
         "hard",
-        "unbeatable"
+        "unbeatable",
+        "star"
     ],
     "future people": [
         "beginner",
@@ -251,6 +252,13 @@
         "hard",
         "unbeatable"
     ],
+    "excited delirium": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
     "ch4_dream1": [
         "beginner",
         "easy",
@@ -329,6 +337,14 @@
         "normal",
         "hard",
         "unbeatable"
+    ],
+    "shut up until i'm done": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
     ],
     "it's whacktime": [
         "beginner",
@@ -648,6 +664,21 @@
         "star"
     ],
     "moon child windows mix": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable"
+    ],
+    "it may be greenish -that future of ours-": [
+        "beginner",
+        "easy",
+        "normal",
+        "hard",
+        "unbeatable",
+        "star"
+    ],
+    "show me": [
         "beginner",
         "easy",
         "normal",

@@ -6,14 +6,16 @@ public class PluginReleaseInfo
 {
     public const string PLUGIN_GUID = "unbeatAP";
     public const string PLUGIN_NAME = "unbeatAP";
-    public const string PLUGIN_VERSION = "0.8.0";
+    public const string PLUGIN_VERSION = "0.9.0";
 
     public static readonly Version[] COMPATIBLE_VERSIONS =
     [
         new Version(0, 4, 0),
         new Version(0, 5, 0),
         new Version(0, 6, 0),
+        new Version(0, 6, 1),
         new Version(0, 7, 0),
-        new Version(0, 8, 0)
+        new Version(0, 8, 0),
+        new Version(0, 9, 0)
     ];
 }
